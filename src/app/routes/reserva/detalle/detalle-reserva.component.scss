@@ -1,0 +1,43 @@
+.fa-2x{
+    font-size: 1.5em;
+}
+.card-title{
+    font-weight: bold;
+    font-size: large;
+}
+.text-dark {
+    color: #607D8B !important;
+    font-size: medium;
+}
+.content-row{
+    margin-left: 50px;
+    margin-top: -30px;
+}
+.form-group-button{
+    margin-top: 40px;
+    height: 50px;
+}
+.btn {
+    border-radius: 12px;
+    font-size: 20px;
+    -webkit-appearance: none;
+    outline: none !important;
+    transition: all 0.1s;
+    border: 1px solid;
+}
+
+.btn-outline-primary {
+    color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}
+
+.btn-outline-primary:hover {
+    color: white !important;
+    background-color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}

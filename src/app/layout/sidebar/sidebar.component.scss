@@ -1,0 +1,30 @@
+.sidebar-nav > li.active {
+    background-color: white !important;
+    border-left-color: white !important;
+    color: white !important;
+    border-right-color: #5e81f4 !important;
+}
+.sidebar-nav > li.active > a {
+    background-color: white !important;
+    color: #5e81f4 !important;
+    font-weight: bold;
+}
+.sidebar:not(.show-scrollbar) {
+    margin-right: -17px;
+    overflow-y: hidden !important;
+}
+
+.sidebar:after {
+    content: "";
+    background: white !important;
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    -webkit-transform: translateZ(0px);
+}
+.sidebar{
+    padding-right: 22px !important;
+}

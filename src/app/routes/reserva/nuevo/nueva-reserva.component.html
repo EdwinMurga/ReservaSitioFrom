@@ -1,0 +1,178 @@
+<div class="content-heading">
+    <div>Reservar</div>
+</div>
+
+<div class="row margin">
+    <div class="col-xl-3">
+        <div class="form-group">
+            <label class="label-filter">Edificio</label>
+            <select class="custom-select custom-select-lg mb-3">
+                <option selected="">Seleccione un edificio</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xl-2">
+        <div class="form-group">
+            <label class="label-filter">Espacio</label>
+            <select class="custom-select custom-select-lg mb-3">
+                <option selected="">Seleccione un espacio</option>
+                <option value="1">Sala</option>
+                <option value="2">Puesto de trabajo</option>
+                <option value="3">Estacionamiento</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xl-2">
+        <div class="form-group">
+            <label class="label-filter">Piso</label>
+            <select class="custom-select custom-select-lg mb-3">
+                <option selected="">Seleccione un piso</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xl-3">
+        <div class="form-group">
+            <label class="label-filter">Rango de fecha y hora</label>
+            <input class="form-control form-control-rounded" type="text" />
+        </div>
+    </div>
+    <div class="col-xl-2">
+        <div class="form-group-button">
+            <button class="mr-1 mb-1 btn btn-outline-primary" type="button">Buscar</button>
+        </div>
+    </div>
+</div>
+
+<div class="row margin">
+    <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">location_on</mat-icon>
+             Mapa
+          </ng-template>
+          Content 1
+        </mat-tab>
+      
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">view_list</mat-icon>
+             Lista
+          </ng-template>
+          
+          <div class="card">
+            <div class="table-responsive pt-4 pl-4">
+               <table class="table">
+                  <tbody>
+                     <tr style="cursor: pointer;" (click)="Ir('/reserva/detalle')">
+                        <td class="b0 wd-xs d-none d-md-table-cell">
+                           <a href>
+                              <img class="thumb64" src="assets/img/bg10.jpg" />
+                           </a>
+                        </td>
+                        <td class="b0">
+                           <p class="h4 mt-0 float-right pr-5">
+                              <span class="rounded badge bg-gray-lighter px-4 mr-2 text-sm d-none d-lg-inline">
+                                 <span class="text-muted">Libre</span>
+                              </span>
+                           </p>
+                           <div><label class="card-title">Sala Libertad</label><br/>
+                            <ul class="list-unstyled px-4">
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-calendar-alt fa-fw mr-3"></em>27 de Octubre, 10:00am.</li>
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-user-friends fa-fw mr-3"></em>6 personas</li>
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-map-marker-alt fa-fw mr-3"></em>San Borja 1234</li>
+                            </ul>
+                            <p class="h4 mt-0 float-right pr-5">
+                                <em class="fa fa-arrow-right fa-1-5 "></em>
+                             </p>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <div class="card">
+            <div class="table-responsive pt-4 pl-4">
+               <table class="table">
+                  <tbody>
+                     <tr>
+                        <td class="b0 wd-xs d-none d-md-table-cell">
+                           <a href>
+                              <img class="thumb64" src="assets/img/bg10.jpg" />
+                           </a>
+                        </td>
+                        <td class="b0">
+                           <p class="h4 mt-0 float-right pr-5">
+                              <span class="rounded badge bg-gray-lighter px-4 mr-2 text-sm d-none d-lg-inline">
+                                 <span class="text-muted">Libre</span>
+                              </span>
+                           </p>
+                           <div><label class="card-title">Sala Libertad</label><br/>
+                            <ul class="list-unstyled px-4">
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-calendar-alt fa-fw mr-3"></em>27 de Octubre, 10:00am.</li>
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-user-friends fa-fw mr-3"></em>6 personas</li>
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-map-marker-alt fa-fw mr-3"></em>San Borja 1234</li>
+                            </ul>
+                            <p class="h4 mt-0 float-right pr-5">
+                                <em class="fa fa-arrow-right fa-1-5 "></em>
+                             </p>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <div class="card">
+            <div class="table-responsive pt-4 pl-4">
+               <table class="table">
+                  <tbody>
+                     <tr>
+                        <td class="b0 wd-xs d-none d-md-table-cell">
+                           <a href>
+                              <img class="thumb64" src="assets/img/bg10.jpg" />
+                           </a>
+                        </td>
+                        <td class="b0">
+                           <p class="h4 mt-0 float-right pr-5">
+                              <span class="rounded badge bg-gray-lighter px-4 mr-2 text-sm d-none d-lg-inline">
+                                 <span class="text-muted">Libre</span>
+                              </span>
+                           </p>
+                           <div><label class="card-title">Sala Libertad</label><br/>
+                            <ul class="list-unstyled px-4">
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-calendar-alt fa-fw mr-3"></em>27 de Octubre, 10:00am.</li>
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-user-friends fa-fw mr-3"></em>6 personas</li>
+                                <li class="p-1 text-dark">
+                                    <em class="fa fa-1-5 fa-map-marker-alt fa-fw mr-3"></em>San Borja 1234</li>
+                            </ul>
+                            <p class="h4 mt-0 float-right pr-5">
+                                <em class="fa fa-arrow-right fa-1-5 "></em>
+                             </p>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+        </mat-tab>
+      </mat-tab-group>
+</div>

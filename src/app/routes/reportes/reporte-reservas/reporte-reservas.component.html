@@ -1,0 +1,137 @@
+<div class="content-heading">
+  <div>Reservas</div>
+</div>
+<div class="row margin">
+  <div class="col-xl-3">
+    <div class="form-group">
+      <label class="label-filter">Edificio</label>
+      <select class="custom-select custom-select-lg mb-3">
+        <option selected="">Seleccione un edificio</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-xl-3">
+    <div class="form-group">
+      <label class="label-filter">Piso</label>
+      <select class="custom-select custom-select-lg mb-3">
+        <option selected="">Seleccione un piso</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-xl-3">
+    <div class="form-group">
+      <label class="label-filter">Fecha</label>
+      <input class="form-control form-control-rounded" type="text" />
+    </div>
+  </div>
+  <div class="col-xl-3">
+    <div class="form-group-button">
+      <button class="mr-1 mb-1 btn btn-outline-primary" type="button">Buscar</button>
+    </div>
+  </div>
+</div>
+
+<!-- START row-->
+<div class="row">
+  <div class="col-xl-12 margen">
+    <div class="card card-default" id="cardChart3">
+       <div class="card-header">
+          <div class="card-title">Resumen de reservas</div>
+       </div>
+       <div class="card-wrapper">
+          <div class="card-body">
+             <div class="indicator show">
+                <span class="spinner"></span>
+             </div>
+             <div flot [dataset]="barStackeData" [options]="barStackedOptions" height="300"></div>
+          </div>
+       </div>
+    </div>
+ </div>
+</div>
+<!-- END row-->
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 ml-5">
+
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+        [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="item">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let element"> {{element.item}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="usuario">
+    <th mat-header-cell *matHeaderCellDef> Perfil </th>
+    <td mat-cell *matCellDef="let element"> {{element.usuario}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="nombres">
+    <th mat-header-cell *matHeaderCellDef> Descripción </th>
+    <td mat-cell *matCellDef="let element"> {{element.nombres}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="apellidos">
+    <th mat-header-cell *matHeaderCellDef> Estado </th>
+    <td mat-cell *matCellDef="let element"> {{element.apellidos}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tipoDocumento">
+    <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
+    <td mat-cell *matCellDef="let element"> {{element.tipoDocumento}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="documento">
+    <th mat-header-cell *matHeaderCellDef> Documento </th>
+    <td mat-cell *matCellDef="let element"> {{element.documento}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="empresa">
+    <th mat-header-cell *matHeaderCellDef> Empresa </th>
+    <td mat-cell *matCellDef="let element"> {{element.empresa}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="area">
+    <th mat-header-cell *matHeaderCellDef> Area </th>
+    <td mat-cell *matCellDef="let element"> {{element.area}} </td>
+  </ng-container>
+  <ng-container matColumnDef="perfil">
+    <th mat-header-cell *matHeaderCellDef> Perfil </th>
+    <td mat-cell *matCellDef="let element"> {{element.perfil}} </td>
+  </ng-container>
+  <ng-container matColumnDef="estado">
+    <th mat-header-cell *matHeaderCellDef> Estado </th>
+    <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
+    <td mat-cell *matCellDef="let element" style="text-align: center;">
+      <button class="btn btn-sm btn-secondary" type="button" tooltip='Editar'>
+        <em class="fa fa-x1 fa-edit"></em>
+      </button>
+      <button class="btn btn-sm btn-secondary" type="button" tooltip='Eliminar'>
+        <em class="fa fa-x1 fa-trash-alt"></em>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+  </tr>
+</table>

@@ -1,0 +1,127 @@
+<h2 mat-dialog-title>Editar tabla auxiliar</h2>
+
+<div mat-dialog-content style="justify-content: center;">
+
+    <div class="card-deck">
+        <div class="card b mb-12">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <form [formGroup]="formRegistro">
+                        <div class="form-row pl-4 pt-1 mr-3">
+                            <div class="col-lg-4 mb-3">
+                                <label>Tipo de tabla : </label>
+                                <input class="form-control" type="text" readonly formControlName="txtNombre" />
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label>Descripción</label>
+                                <input class="form-control" type="text" placeholder="Ingrese información"
+                                    formControlName="txtDescripcion" />
+                                <!-- <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtDescripcion'].hasError('required') && (formRegistro.controls['txtDescripcion'].dirty || formRegistro.controls['txtDescripcion'].touched)">*Campo
+                            requerido</span> -->
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label>Valor de texto</label>
+                                <input class="form-control" type="text" placeholder="Ingrese información"
+                                    formControlName="txtValorTexto" />
+                                <!-- <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtValorTexto'].hasError('required') && (formRegistro.controls['txtValorTexto'].dirty || formRegistro.controls['txtValorTexto'].touched)">*Campo
+                            requerido</span> -->
+                            </div>
+                        </div>
+                        <div class="form-row pl-4 pt-1 mr-3">
+                            <div class="col-lg-4">
+                                <label>Valor texto corto</label>
+                                <input class="form-control" type="text" placeholder="Ingrese información"
+                                    formControlName="txtValorCorto" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Valor entero</label>
+                                <input class="form-control" type="text" placeholder="Ingrese información"
+                                    formControlName="txtValorEntero" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Valor decimal</label>
+                                <input class="form-control" type="text" placeholder="Ingrese información"
+                                    formControlName="txtValorDecimal" />
+                            </div>
+                        </div>
+                        <div class="form-row pl-4 pt-1 mr-3">
+                            <div class="col-lg-4">
+                                <label>Estado</label>
+                                <select class="form-control" formControlName="cboEstado">
+                                    <option value="">Seleccione</option>
+                                    <!-- <option *ngFor="let estado of lstEstado" value="{{estado.nvalorEntero}}">{{estado.vvalorTextoCorto}}</option> -->
+                                </select>
+                                <!-- <span class="text-danger"
+                           *ngIf="formRegistro.controls['cboEstado'].hasError('required') && (formRegistro.controls['cboEstado'].dirty || formRegistro.controls['cboEstado'].touched)">*Campo
+                           requerido</span> -->
+                            </div>
+                            <div class="col-lg-8 pl-4 mt-1">
+                                <button class="mr-1 mt-4 btn btn-outline-danger" type="submit">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Tipo de Tabla Column -->
+    <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+        <td mat-cell *matCellDef="let element"> {{element.vvalorTextoLargo}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="texto">
+        <th mat-header-cell *matHeaderCellDef> Valor texto corto </th>
+        <td mat-cell *matCellDef="let element"> {{element.vvalorTextoCorto }} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="entero">
+        <th mat-header-cell *matHeaderCellDef> Valor entero </th>
+        <td mat-cell *matCellDef="let element"> {{element.nvalorEntero }} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="decimal">
+        <th mat-header-cell *matHeaderCellDef> Valor decimal </th>
+        <td mat-cell *matCellDef="let element"> {{element.nvalorDecimal }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let element">{{element.iidEstadoRegistro == 1 ? 'ACTIVO':'INACTIVO'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="configurar">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Editar </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <button class="btn btn-sm btn-secondary" type="button" tooltip='Seleccione'>
+                <em class="fa fa-edit"></em>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+</mat-paginator>
+<br>
+<div mat-dialog-actions style="justify-content: center;">
+    <button mat-button
+    mat-raised-button
+    color="secundary"  (click)="cerrarDialogo()"> Cerrar </button>
+    <button mat-button
+    mat-raised-button
+    color="primary"  (click)="confirmado()"> Guardar </button>
+</div>

@@ -1,0 +1,33 @@
+<div class="content-home">
+    <div>Hola Fernando</div>
+</div>
+
+<label class="content-home-subtitle">Inicia este nuevo día, con la información que tenemos para ti</label>
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-xl-12">
+            <div>
+                <carousel [interval]="myInterval" [noWrap]="false">
+                    <slide *ngFor="let slidez of slides; let index=index" [active]="slidez.active">
+                        <div class="col-xl-6">
+                            <div class="card card-default" id="cardChart3">
+                               <div class="card-header">
+                                  <div class="card-title">Bar - Stacked</div>
+                               </div>
+                               <div class="card-wrapper">
+                                  <div class="card-body">
+                                     <div class="indicator show">
+                                        <span class="spinner"></span>
+                                     </div>
+                                     <div flot [dataset]="barStackeData" [options]="barStackedOptions" height="300"></div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                    </slide>
+                </carousel>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,23 @@
+.icon-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+    @mixin md-icon-size($size: 16px) {
+      font-size: $size;
+      height: $size;
+      width: $size;
+      color: #030076;
+      vertical-align: middle;
+    }
+  
+    .md-icon-16 {
+      @include md-icon-size(55px);
+    }
+  
+    .cambia-nombre-dialog-mat .mat-dialog-container {
+      border-radius: 12px;
+    }
+  
+  

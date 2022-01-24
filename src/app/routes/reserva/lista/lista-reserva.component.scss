@@ -1,0 +1,91 @@
+.fa-2x{
+    font-size: 1.5em;
+}
+.card-title{
+    font-weight: bold;
+    font-size: large;
+}
+.text-dark {
+    color: #607D8B !important;
+    font-size: medium;
+}
+.content-row{
+    margin-left: 50px;
+    margin-top: -30px;
+}
+.margin{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.form-group-button{
+margin-top: 40px;
+height: 50px;
+}
+
+.label-filter{
+    font-size: 18px;
+    color: silver;
+}
+.custom-select-lg {
+    height: calc(1.5em + 1.25rem + 2px);
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    padding-left: 1.25rem;
+    font-size: 1rem;
+    color: silver;
+    border-radius: 16px;
+    height: 55px;
+    border: 0px;
+}
+.form-control-rounded {
+    border-radius: 16px;
+    height: 55px;
+    border: 0px;
+    border-color: white;
+}
+.btn {
+    border-radius: 12px;
+    font-size: 20px;
+    -webkit-appearance: none;
+    outline: none !important;
+    transition: all 0.1s;
+}
+
+.thumb64 {
+    width: 200px !important;
+    height: 150px !important;
+}
+
+.mat-tab-group {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    width: 100%;
+}
+
+.card {
+    margin: 20px;
+    box-shadow: none; 
+    border: 0;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+.card-title{
+    font-weight: bold;
+    font-size: large;
+}
+.fa-1-5 {
+    text-align: center;
+    width: 1.5em;
+    font-size: 1.5em;
+}
+.btn-outline-primary {
+    color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}
+
+.btn-outline-primary:hover {
+    color: white !important;
+    background-color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}
