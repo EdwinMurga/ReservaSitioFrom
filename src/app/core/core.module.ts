@@ -7,6 +7,8 @@ import { MenuService } from './menu/menu.service';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { ParametroAplicacionService } from './service/parametroAplicacion.service';
+import { PerfilService } from './service/perfil.service';
+import { UsuarioService } from './service/usuario.service';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { ParametroAplicacionService } from './service/parametroAplicacion.servic
         ThemesService,
         TranslatorService,
         MenuService,
-        ParametroAplicacionService
+        ParametroAplicacionService,
+        PerfilService,
+        UsuarioService
     ],
     declarations: [
     ],

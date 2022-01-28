@@ -1,22 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { OnInit, Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { PerfilService } from 'src/app/core/service/perfil.service';
 
-export interface PeriodicElement {
-    name: string;
-    position: number;
-    weight: number;
-    symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-    { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-];
+const swal = require('sweetalert');
 
 @Component({
     selector: 'app-mantenimiento-perfil',
@@ -25,20 +15,60 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class PerfilComponent implements OnInit {
 
-    displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol','acciones'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    selection = new SelectionModel<PeriodicElement>(true, []);
+    displayedColumns: string[] = ['select', 'vnombrePerfil', 'vdescripcionPerfil', 'iidEstadoRegistro', 'acciones'];
+    dataSource: MatTableDataSource<any>;
+    selection = new SelectionModel<any>(true, []);
+    form: FormGroup;
 
-    constructor(private router:Router) {
+    constructor(
+        private fb: FormBuilder,
+        private router: Router,
+        private perfilService: PerfilService
+    ) {
 
+        this.form = fb.group({
+            'txtNombre': [''],
+            'cboEstado': [''],
+        });
+
+        this.dataSource = new MatTableDataSource();
     }
     ngOnInit(): void {
 
     }
 
-    Ir(url:string){
+    Ir(url: string) {
         console.log(url)
         this.router.navigate([url]);
+    }
+
+    onSubmit($ev, value: any) {
+        console.log(value)
+        $ev.preventDefault();
+        for (let c in this.form.controls) {
+            this.form.controls[c].markAsTouched();
+        }
+
+        if (this.form.valid) {
+            const req = {
+                "pageNum": 1,
+                "pageSize": 10,
+                "iid_estado_registro": -1,
+                "iid_perfil": -1,
+                "vnombre_perfil": value.txtNombre,
+                "vdescripcion_perfil": value.cboEstado
+            }
+            this.perfilService.post(req, '/Perfil/GetListPerfil').subscribe(res => {
+                console.log(res.data)
+
+                if(!res.isSuccess){
+                    swal('Validación', res.message, 'warning'); return;
+                }
+                
+                this.dataSource.data = res.data;
+
+            });
+        } 
     }
 
     /** Whether the number of selected elements matches the total number of rows. */
@@ -58,11 +88,4 @@ export class PerfilComponent implements OnInit {
         this.selection.select(...this.dataSource.data);
     }
 
-    /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: PeriodicElement): string {
-        if (!row) {
-            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-        }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-    }
 }

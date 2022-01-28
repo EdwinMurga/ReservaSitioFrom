@@ -1,0 +1,122 @@
+<h2 mat-dialog-title>Agregar Usuario</h2>
+
+<div mat-dialog-content style="justify-content: center; background-color: #f5f7fa;">
+
+  <div class="form-group row">
+    <div class="col-md-12">
+      <form [formGroup]="formRegistro">
+        <div class="form-row pl-4 pt-1 mr-3">
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Perfil</label>
+            <select class="custom-select custom-select-lg" formControlName="cboPerfil">
+              <option value="">Seleccione</option>
+              <option value="1">Perfil 1</option>
+              <option value="2">Perfil 2</option>
+              <option value="3">Perfil 3</option>
+            </select>
+            <span class="text-danger"
+              *ngIf="formRegistro.controls['cboPerfil'].hasError('required') && (formRegistro.controls['cboPerfil'].dirty || formRegistro.controls['cboPerfil'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Tipo de Documento</label>
+            <select class="custom-select custom-select-lg" formControlName="cboTipoDocumento">
+              <option value="">Seleccione</option>
+              <option value="1">DNI</option>
+              <option value="2">RUC</option>
+              <option value="3">C/E</option>
+            </select>
+            <span class="text-danger"
+              *ngIf="formRegistro.controls['cboTipoDocumento'].hasError('required') && (formRegistro.controls['cboTipoDocumento'].dirty || formRegistro.controls['cboTipoDocumento'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Número Documento</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtNumeroDocumento" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtNumeroDocumento'].hasError('required') && (formRegistro.controls['txtNumeroDocumento'].dirty || formRegistro.controls['txtNumeroDocumento'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Estado</label>
+            <select class="custom-select custom-select-lg" formControlName="cboEstado">
+              <option value="">Seleccione</option>
+              <option value="1">ACTIVO</option>
+              <option value="2">INACTIVO</option>
+            </select>
+            <span class="text-danger"
+            *ngIf="formRegistro.controls['cboEstado'].hasError('required') && (formRegistro.controls['cboEstado'].dirty || formRegistro.controls['cboEstado'].touched)">*Campo
+            requerido</span>
+          </div>
+        </div>
+        <div class="form-row pl-4 pt-1 mr-3">
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Nombre</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtNombre" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtNombre'].hasError('required') && (formRegistro.controls['txtNombre'].dirty || formRegistro.controls['txtNombre'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Apellido Paterno</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtApellidoPaterno" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtApellidoPaterno'].hasError('required') && (formRegistro.controls['txtApellidoPaterno'].dirty || formRegistro.controls['txtApellidoPaterno'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Apellido Materno</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtApellidoMaterno" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtApellidoMaterno'].hasError('required') && (formRegistro.controls['txtApellidoMaterno'].dirty || formRegistro.controls['txtApellidoMaterno'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <label class="label-filter">Número telefónico</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtNumeroTelefonico" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtNumeroTelefonico'].hasError('required') && (formRegistro.controls['txtNumeroTelefonico'].dirty || formRegistro.controls['txtNumeroTelefonico'].touched)">*Campo
+              requerido</span>
+          </div>
+        </div>
+        <div class="form-row pl-4 pt-1 mr-3">
+          <div class="col-lg-3">
+            <label class="label-filter">Contraseña</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtClave" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtClave'].hasError('required') && (formRegistro.controls['txtClave'].dirty || formRegistro.controls['txtClave'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-3">
+            <label class="label-filter">Confirmar contraseña</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtConfirmarClave" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtConfirmarClave'].hasError('required') && (formRegistro.controls['txtConfirmarClave'].dirty || formRegistro.controls['txtConfirmarClave'].touched)">*Campo
+              requerido</span>
+          </div>
+          <div class="col-lg-6">
+            <label class="label-filter">Correo Electrónico</label>
+            <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+              formControlName="txtCorreoElectronico" />
+              <span class="text-danger"
+              *ngIf="formRegistro.controls['txtCorreoElectronico'].hasError('required') && (formRegistro.controls['txtCorreoElectronico'].dirty || formRegistro.controls['txtCorreoElectronico'].touched)">*Campo
+              requerido</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+<br>
+<div mat-dialog-actions style="justify-content: center;">
+  <button class="btn btn-secundary" type="button" (click)="cerrarDialogo()"> Cerrar </button>
+  <button class="ml-1 mb-1 btn btn-primary" type="button" (click)="postRegistrar()"> Guardar </button>
+</div>

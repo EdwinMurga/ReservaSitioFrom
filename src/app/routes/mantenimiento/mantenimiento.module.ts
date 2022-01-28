@@ -11,6 +11,8 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { PisoComponent } from './piso/piso.component';
 import { EditarTablaAuxiliarComponent } from './tabla-auxiliar/editar-tabla-auxiliar/editar-tabla-auxiliar.component';
 import { TablaAuxiliarComponent } from './tabla-auxiliar/tabla-auxiliar.component';
+import { AgregarUsuarioComponent } from './usuario/agregar-usuario/agregar-usuario.component';
+import { EditarUsuarioComponent } from './usuario/editar-usuario/editar-usuario.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 
 const routes: Routes = [
@@ -41,7 +43,9 @@ const routes: Routes = [
         EspacioComponent,
         ParametroComponent,
         TablaAuxiliarComponent,
-        EditarTablaAuxiliarComponent
+        EditarTablaAuxiliarComponent,
+        AgregarUsuarioComponent,
+        EditarUsuarioComponent
     ],
     exports: [
         RouterModule
