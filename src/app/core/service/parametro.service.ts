@@ -6,7 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 
 
 @Injectable()
-export class UsuarioService {
+export class ParametroService {
   constructor(private http: HttpClient) {}
 
   public get(collection: string): Observable<any> {
@@ -33,7 +33,7 @@ export class UsuarioService {
   public post(req: any, collection: string): Observable<any> {
     const jsonrequest = JSON.stringify(req);
     const url =
-      environment.ENDPOINTS.API_URL + 
+      environment.ENDPOINTS.API_URL +
       collection;
 
     const httpOptions = {
@@ -43,28 +43,6 @@ export class UsuarioService {
     };
 
     return this.http.post<any>(url, jsonrequest, httpOptions).pipe(
-      tap((data: any) => {
-         
-      }),
-      catchError(err => {
-        throw 'Error in source. Details: ' + err;
-      }),
-    );
-  }
-
-  public delete(collection: string): Observable<any> {
-
-    const url =
-      environment.ENDPOINTS.API_URL + 
-      collection;
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
-
-    return this.http.delete<any>(url, httpOptions).pipe(
       tap((data: any) => {
          
       }),

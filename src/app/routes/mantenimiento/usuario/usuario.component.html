@@ -1,13 +1,14 @@
 <div class="content-heading">
   <div>Usuario</div>
 </div>
-<form [formGroup]="formBusqueda" (ngSubmit)="buscar(formBusqueda.value)">
+<form [formGroup]="formBusqueda" (ngSubmit)="buscar()">
   <div class="row margin">
     <div class="col-xl-3">
       <div class="form-group">
         <label class="label-filter">Perfil</label>
         <select class="custom-select custom-select-lg mb-3" formControlName="cboPerfil">
           <option value="-1">Seleccione un perfil</option>
+          <option *ngFor="let perfil of lstPerfil" value="{{perfil.id}}">{{perfil.value}}</option>
         </select>
       </div>
     </div>
@@ -16,6 +17,7 @@
         <label class="label-filter">Tipo Documento</label>
         <select class="custom-select custom-select-lg mb-3" formControlName="cboTipoDocumento">
           <option value="-1">Seleccione tipo documento</option>
+          <option value="{{documento.id}}" *ngFor="let documento of lstTipoDocumento">{{documento.value}}</option>
         </select>
       </div>
     </div>
@@ -23,7 +25,7 @@
       <div class="form-group">
         <label class="label-filter">Número de documento</label>
         <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
-          autocomplete="off" formControlName="txtNumeroDocumento"/>
+          autocomplete="off" formControlName="txtNumeroDocumento" />
       </div>
     </div>
     <div class="col-xl-3">
@@ -31,6 +33,7 @@
         <label class="label-filter">Estado</label>
         <select class="custom-select custom-select-lg mb-3" formControlName="cboEstado">
           <option value="-1">Seleccione un estado</option>
+          <option value="{{estado.id}}" *ngFor="let estado of lstEstado">{{estado.value2}}</option>
         </select>
       </div>
     </div>
@@ -40,21 +43,21 @@
       <div class="form-group">
         <label class="label-filter">Nombre</label>
         <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
-          autocomplete="off" formControlName="txtNombre"/>
+          autocomplete="off" formControlName="txtNombre" />
       </div>
     </div>
     <div class="col-xl-3">
       <div class="form-group">
         <label class="label-filter">Apellido Paterno</label>
         <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
-          autocomplete="off" formControlName="txtApellidoPaterno"/>
+          autocomplete="off" formControlName="txtApellidoPaterno" />
       </div>
     </div>
     <div class="col-xl-3">
       <div class="form-group">
         <label class="label-filter">Apellido Materno</label>
         <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
-          autocomplete="off" formControlName="txtApellidoMaterno"/>
+          autocomplete="off" formControlName="txtApellidoMaterno" />
       </div>
     </div>
     <div class="col-xl-3">
@@ -69,67 +72,76 @@
   <button class="mr-1 mb-1 btn btn-primary" type="button" (click)="mostrarDialogoAgregar()">Agregar</button>
 </div>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 ml-5">
+<div class="mat-elevation-z8 ml-5 mr-5">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <table mat-table [dataSource]="dataSource">
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="codigo">
-    <th mat-header-cell *matHeaderCellDef> Código </th>
-    <td mat-cell *matCellDef="let element"> {{element.iid_usuario}} </td>
-  </ng-container>
+    <!-- Position Column -->
+    <ng-container matColumnDef="codigo">
+      <th mat-header-cell *matHeaderCellDef> Código </th>
+      <td mat-cell *matCellDef="let element"> {{element.iid_usuario}} </td>
+    </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="nombre">
-    <th mat-header-cell *matHeaderCellDef> Nombre </th>
-    <td mat-cell *matCellDef="let element"> {{element.vnombres}} </td>
-  </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.vnombres}} </td>
+    </ng-container>
 
-  <!-- Weight Column -->
-  <ng-container matColumnDef="apellidoPaterno">
-    <th mat-header-cell *matHeaderCellDef> Apellido Paterno </th>
-    <td mat-cell *matCellDef="let element"> {{element.vapellido_paterno}} </td>
-  </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="apellidoPaterno">
+      <th mat-header-cell *matHeaderCellDef> Apellido Paterno </th>
+      <td mat-cell *matCellDef="let element"> {{element.vapellido_paterno}} </td>
+    </ng-container>
 
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="apellidoMaterno">
-    <th mat-header-cell *matHeaderCellDef> Apellido Materno </th>
-    <td mat-cell *matCellDef="let element"> {{element.vapellido_materno}} </td>
-  </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="apellidoMaterno">
+      <th mat-header-cell *matHeaderCellDef> Apellido Materno </th>
+      <td mat-cell *matCellDef="let element"> {{element.vapellido_materno}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="tipoDocumento">
-    <th mat-header-cell *matHeaderCellDef> Tipo de Documento </th>
-    <td mat-cell *matCellDef="let element"> {{element.iid_tipo_documento}} </td>
-  </ng-container>
+    <ng-container matColumnDef="tipoDocumento">
+      <th mat-header-cell *matHeaderCellDef> Tipo de Documento </th>
+      <td mat-cell *matCellDef="let element"> {{element.vtipodocumento}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="documento">
-    <th mat-header-cell *matHeaderCellDef> Documento </th>
-    <td mat-cell *matCellDef="let element"> {{element.vnro_documento}} </td>
-  </ng-container>
+    <ng-container matColumnDef="documento">
+      <th mat-header-cell *matHeaderCellDef> Documento </th>
+      <td mat-cell *matCellDef="let element"> {{element.vnro_documento}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="perfil">
-    <th mat-header-cell *matHeaderCellDef> Perfil </th>
-    <td mat-cell *matCellDef="let element"> {{element.iid_perfil}} </td>
-  </ng-container>
-  <ng-container matColumnDef="estado">
-    <th mat-header-cell *matHeaderCellDef> Estado </th>
-    <td mat-cell *matCellDef="let element"> {{element.iid_estado_registro}} </td>
-  </ng-container>
+    <ng-container matColumnDef="perfil">
+      <th mat-header-cell *matHeaderCellDef> Perfil </th>
+      <td mat-cell *matCellDef="let element"> {{element.vnombre_perfil}} </td>
+    </ng-container>
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element"> {{element.vestado}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="acciones">
-    <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
-    <td mat-cell *matCellDef="let element" style="text-align: center;">
-      <button class="btn btn-sm btn-secondary" type="button" tooltip='Editar' (click)="mostrarDialogoEditar(element)">
-        <em class="fa fa-x1 fa-edit"></em>
-      </button>
-      <button class="btn btn-sm btn-secondary" type="button" tooltip='Eliminar' (click)="postEliminar()">
-        <em class="fa fa-x1 fa-trash-alt"></em>
-      </button>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
+      <td mat-cell *matCellDef="let element" style="text-align: center;">
+        <button class="btn btn-sm btn-secondary" type="button" tooltip='Editar' (click)="mostrarDialogoEditar(element)">
+          <em class="fa fa-x1 fa-edit"></em>
+        </button>
+        <button class="btn btn-sm btn-secondary" type="button" tooltip='Eliminar'
+          (click)="postEliminar(element.iid_usuario)">
+          <em class="fa fa-x1 fa-trash-alt"></em>
+        </button>
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-  </tr>
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+
+  </table>
+
+  <mat-paginator #paginator [pageSizeOptions]="[3, 5, 10, 20]" [length]="totalRecord" [pageIndex]="pageIndex" [pageSize]="pageSize"
+    (page)="changePage($event)" showFirstLastButtons aria-label="Select page">
+  </mat-paginator>
+</div>
 
 <div class="form-group-button mr-5 ml-5 mt-3 mb-1">
   <button class="mr-1 mb-1 btn btn-outline-primary" type="button" (click)="Ir('/mantenimiento')">Retroceder</button>

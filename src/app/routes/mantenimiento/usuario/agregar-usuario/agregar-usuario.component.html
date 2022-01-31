@@ -10,9 +10,7 @@
             <label class="label-filter">Perfil</label>
             <select class="custom-select custom-select-lg" formControlName="cboPerfil">
               <option value="">Seleccione</option>
-              <option value="1">Perfil 1</option>
-              <option value="2">Perfil 2</option>
-              <option value="3">Perfil 3</option>
+              <option *ngFor="let perfil of lstPerfil" value="{{perfil.id}}">{{perfil.value}}</option>
             </select>
             <span class="text-danger"
               *ngIf="formRegistro.controls['cboPerfil'].hasError('required') && (formRegistro.controls['cboPerfil'].dirty || formRegistro.controls['cboPerfil'].touched)">*Campo
@@ -22,9 +20,7 @@
             <label class="label-filter">Tipo de Documento</label>
             <select class="custom-select custom-select-lg" formControlName="cboTipoDocumento">
               <option value="">Seleccione</option>
-              <option value="1">DNI</option>
-              <option value="2">RUC</option>
-              <option value="3">C/E</option>
+              <option value="{{documento.id}}" *ngFor="let documento of lstTipoDocumento">{{documento.value}}</option>
             </select>
             <span class="text-danger"
               *ngIf="formRegistro.controls['cboTipoDocumento'].hasError('required') && (formRegistro.controls['cboTipoDocumento'].dirty || formRegistro.controls['cboTipoDocumento'].touched)">*Campo
@@ -42,8 +38,7 @@
             <label class="label-filter">Estado</label>
             <select class="custom-select custom-select-lg" formControlName="cboEstado">
               <option value="">Seleccione</option>
-              <option value="1">ACTIVO</option>
-              <option value="2">INACTIVO</option>
+              <option value="{{estado.id}}" *ngFor="let estado of lstEstado">{{estado.value2}}</option>
             </select>
             <span class="text-danger"
             *ngIf="formRegistro.controls['cboEstado'].hasError('required') && (formRegistro.controls['cboEstado'].dirty || formRegistro.controls['cboEstado'].touched)">*Campo
