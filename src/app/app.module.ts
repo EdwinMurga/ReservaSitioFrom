@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -11,6 +11,10 @@ import { CoreModule } from './core/core.module';
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
 import { RoutesModule } from './routes/routes.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { JwtInterceptor } from './core/_interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './core/_interceptors/error.interceptor';
+import { LoadingInterceptor } from './core/_interceptors/loading.interceptor';
 
 // https://github.com/ocombe/ng2-translate/issues/218
 export function createTranslateLoader(http: HttpClient) {
@@ -28,6 +32,7 @@ export function createTranslateLoader(http: HttpClient) {
         LayoutModule,
         SharedModule.forRoot(),
         RoutesModule,
+        NgxSpinnerModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -36,7 +41,11 @@ export function createTranslateLoader(http: HttpClient) {
             }
         })
     ],
-    providers: [],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass:JwtInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass:ErrorInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi: true},
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

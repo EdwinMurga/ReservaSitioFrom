@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { LoginComponent } from './login/login.component';
 
+//import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+
 
 /* Use this routes definition in case you want to make them lazy-loaded */
 /*const routes: Routes = [
@@ -19,6 +21,7 @@ import { LoginComponent } from './login/login.component';
 @NgModule({
     imports: [
         SharedModule,
+       // RecaptchaV3Module,
         // RouterModule.forChild(routes)
     ],
     declarations: [

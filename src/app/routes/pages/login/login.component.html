@@ -3,22 +3,25 @@
         <div class="row">
             <div class="col-md-4 login-sec">
                 <h2 class="text-center">Iniciar Sesión</h2>
-                <form class="login-form">
+                <form class="login-form" [formGroup]="formLogin" (submit)="submitFormLogin($event, formLogin.value)">
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="text-bold">Usuario</label>
-                        <input type="text" class="form-control" placeholder="">
-
+                        <input type="text" class="form-control" placeholder="" formControlName="user">
+                        <span class="text-danger"
+                        *ngIf="formLogin.controls['user'].hasError('required') && (formLogin.controls['user'].dirty || formLogin.controls['user'].touched)">*Campo
+                        requerido</span>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1" class="text-bold">Contraseña</label>
-                        <input type="password" class="form-control" placeholder="">
+                        <input type="password" class="form-control" placeholder="" formControlName="password">
+                        <span class="text-danger" *ngIf="formLogin.controls['password'].hasError('required') && (formLogin.controls['password'].dirty || formLogin.controls['password'].touched)">*Campo requerido</span>
                     </div>
 
                     <div class="row margen-label">
                         <a href="#"><label for="exampleInputPassword1" class="text-bold">¿Olvidaste tu contraseña?</label></a>
                     </div>
                     <div class="row">
-                        <button type="submit" class="btn btn-login" (click)="Ir('/home')">Iniciar Sesión</button>
+                        <button type="submit" class="btn btn-login">Iniciar Sesión</button>
                     </div>
                 </form>
             </div>

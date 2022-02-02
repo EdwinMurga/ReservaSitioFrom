@@ -10,6 +10,7 @@ import { ParametroAplicacionService } from './service/parametroAplicacion.servic
 import { PerfilService } from './service/perfil.service';
 import { UsuarioService } from './service/usuario.service';
 import { ParametroService } from './service/parametro.service';
+import { AuthenticationService } from './service/authentication.service';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ParametroService } from './service/parametro.service';
         MenuService,
         ParametroAplicacionService,
         PerfilService,
+        AuthenticationService,
         UsuarioService,
         ParametroService
     ],
