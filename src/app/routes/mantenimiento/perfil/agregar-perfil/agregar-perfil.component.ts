@@ -15,6 +15,7 @@ import { PerfilComponent } from '../perfil.component';
 import { PerfilService } from 'src/app/core/service/perfil.service';
 
 
+
 export interface IPerfil {
   perfil: string;
   descripcion: string;
@@ -35,18 +36,18 @@ export interface Imodulo {
 const swal = require('sweetalert');
 
 @Component({
-  selector: 'app-perfil-agregar',
-  templateUrl: './perfil-agregar.component.html',
-  styleUrls: ['./perfil-agregar.component.scss'],
+  selector: 'app-agregar-perfil',
+  templateUrl: './agregar-perfil.component.html',
+  styleUrls: ['./agregar-perfil.component.scss'],
 })
 export class AgregarPerfilComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @Output() onClick = new EventEmitter<any>();
-  @Output() onClickPopupShow = new EventEmitter<any>();
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator | undefined;
+  //@Output() onClick = new EventEmitter<any>();
+  //@Output() onClickPopupShow = new EventEmitter<any>();
   // @Input() idPerfil: number;
   // perfiles: IPerfil[] = [];
   modulos: Imodulo[] = [];
-  formGroupAddPerfil: FormGroup;
+  formGroupPerfil: FormGroup;
   // selection = new SelectionModel<IPerfil>(true, []);
   selectionVer = new SelectionModel<Imodulo>(true, []);
   selectionCrear = new SelectionModel<Imodulo>(true, []);
@@ -61,7 +62,7 @@ export class AgregarPerfilComponent implements OnInit {
     'editar',
     'borrar',
   ];
-  dataSource = new MatTableDataSource<Imodulo>(this.modulos);
+  dataSource = new MatTableDataSource<any>();
   idPerfil: any;
   textButton: string = 'Agregar';
   textButton2: string = 'Crear Perfil';
@@ -72,19 +73,23 @@ export class AgregarPerfilComponent implements OnInit {
     public router: Router,
     private perfilComponent: PerfilComponent
   ) {
-    this.createFormGroupAddPerfil();
-    this.getValuesForEdit();
+    this.formGroupPerfil = this.fb.group({
+      perfil: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      estado: ['-1'],
+    });
+    //this.getValuesForEdit();
   }
 
   ngOnInit(): void {
     if (this.idPerfil === undefined) {
-      this.getModules();
+     // this.getModules();
     } else {
-      this.onClickPopupShow.emit(true);
+     // this.onClickPopupShow.emit(true);
     }
-    this.dataSource.paginator = this.paginator;
+    //this.dataSource.paginator = this.paginator;
   }
-
+/*
   getModules() {
     this.perfilService.getModules().subscribe((res: any[]) => {
       res.map((ele) => {
@@ -112,10 +117,12 @@ export class AgregarPerfilComponent implements OnInit {
       });
     });
   }
-
+  
+  */
+  /*
   getValuesForEdit() {
     this.perfilComponent.idPerfilSourced$.subscribe((res) => {
-      this.onClickPopupShow.emit(true);
+    //  this.onClickPopupShow.emit(true);
       this.idPerfil = res;
       this.perfilService.getById(this.idPerfil).subscribe((res) => {
         this.textButton = 'Editar';
@@ -145,6 +152,7 @@ export class AgregarPerfilComponent implements OnInit {
       });
     });
   }
+  */
 
   // isAllSelected() {
   //   const numSelected = this.selection.selected.length;
@@ -158,18 +166,15 @@ export class AgregarPerfilComponent implements OnInit {
   //     : this.dataSource.data.forEach((row) => this.selection.select(row));
   // }
 
+ 
   onClickButton(event) {
-    this.onClick.emit(event);
+    //this.onClick.emit(event);
   }
 
-  createFormGroupAddPerfil() {
-    this.formGroupAddPerfil = this.fb.group({
-      perfil: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      estado: [''],
-    });
-  }
 
+
+
+  /*
   addPerfil(data: IPerfil, event) {
     const reqData: IPerfilResponse = {
       iid: 0,
@@ -196,7 +201,9 @@ export class AgregarPerfilComponent implements OnInit {
       this.updatePerfil(reqData);
     }
   }
+  */
 
+  /*
   updatePerfil(data) {
     const reqData: IPerfilResponse = {
       iid: this.idPerfil,
@@ -213,7 +220,7 @@ export class AgregarPerfilComponent implements OnInit {
       // this.onClick.emit(event);
     });
   }
-
+*/
   savePerfil(event) {
     const seletedVer = this.selectionVer.selected;
     const selectionCrear = this.selectionCrear.selected;
@@ -250,7 +257,7 @@ export class AgregarPerfilComponent implements OnInit {
     //     ele.borrar = true;
     //   }
     // });
-
+/*
     const dataReq = this.dataSource.data.map((ele) => {
       return {
         iidOpcion: ele.iidOpcion,
@@ -273,6 +280,8 @@ export class AgregarPerfilComponent implements OnInit {
         swal("Información","Ocurrioun problema, intenteo nuevamente dentro de unos minutos.","warning");
       }
     });
+
+    */
   }
 
   get perfilCreado() {

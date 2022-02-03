@@ -13,7 +13,8 @@
       <div class="form-group">
         <label class="label-filter">Estado</label>
         <select class="custom-select custom-select-lg mb-3" formControlName="cboEstado">
-          <option selected="">Seleccione un estado</option>
+          <option selected="-1">Seleccione un estado</option>
+          <option value="{{estado.id}}" *ngFor="let estado of lstEstado">{{estado.value2}}</option>
         </select>
       </div>
     </div>
@@ -26,7 +27,7 @@
 </form>
 
 <div class="form-group-button mr-5 ml-5 mt-3 mb-1">
-  <button class="mr-1 mb-1 btn btn-primary" type="button">Agregar</button>
+  <button class="mr-1 mb-1 btn btn-primary" type="button" (click)="mostrarDialogoAgregar(0)">Agregar</button>
 </div>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 ml-5">
