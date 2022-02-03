@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   Input,
+  Inject,
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -13,7 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PerfilComponent } from '../perfil.component';
 import { PerfilService } from 'src/app/core/service/perfil.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 
@@ -66,24 +67,27 @@ export class AgregarPerfilComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   idPerfil: any;
   Titulo: string = 'Agregar ';
+  totalRecord:any=0;
 
+  pageIndex :any = 1;
+  pageSize :any=5;
 
   req:any={
 
-    "pageNum": 1,
-    "pageSize": 10,
-    "iid_estado_registro":-1,
-    "iid_usuario_registra": -1,
-    "iid_perfil_opcion": -1,
-    "iid_perfil": -1,
-    "iid_opcion": -1
+    pageNum: 1,
+    pageSize: 10,
+    iid_estado_registro:-1,
+    iid_usuario_registra: -1,
+    iid_perfil_opcion: -1,
+    iid_perfil: -1,
+    iid_opcion: -1
   };
 
   constructor(
     private fb: FormBuilder,
     private perfilService: PerfilService,
     public router: Router,
-    private perfilComponent: PerfilComponent,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogo: MatDialogRef<AgregarPerfilComponent>,
   ) 
   {
@@ -94,12 +98,14 @@ export class AgregarPerfilComponent implements OnInit {
       estado: ['-1'],
     });
 
+this.loadData(this.req);
+
   }
 
   ngOnInit(): void {
 
-    if(this.perfilComponent.flgnuevo==1){
-    this.Titulo="Agregar";
+    if(this.data.flgnuevo==1){
+      this.Titulo="Agregar";
 
     }
 
@@ -123,9 +129,22 @@ export class AgregarPerfilComponent implements OnInit {
             swal('Error', res.message, 'error'); return;
         }
         this.dataSource = res.data;
+        this.totalRecord = res.totalregistro;
       
        // this.isLoading = false;
     })
+}
+
+changePage(event:any)
+{
+
+  //this.pageIndex = event.pageIndex;
+  //this.pageSize = event.pageSize;
+// (this.pageIndex*this.pageSize)+1,
+this.req.pageNum = (event.pageIndex*event.pageSize)+1;
+this.req.pageSize = event.pageSize;
+  this.loadData(this.req);
+
 }
 
 
