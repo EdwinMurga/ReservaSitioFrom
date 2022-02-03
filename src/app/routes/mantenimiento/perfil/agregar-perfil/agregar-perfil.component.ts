@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PerfilComponent } from '../perfil.component';
 import { PerfilService } from 'src/app/core/service/perfil.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 
@@ -64,31 +65,71 @@ export class AgregarPerfilComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<any>();
   idPerfil: any;
-  textButton: string = 'Agregar';
-  textButton2: string = 'Crear Perfil';
+  Titulo: string = 'Agregar ';
+
+
+  req:any={
+
+    "pageNum": 1,
+    "pageSize": 10,
+    "iid_estado_registro":-1,
+    "iid_usuario_registra": -1,
+    "iid_perfil_opcion": -1,
+    "iid_perfil": -1,
+    "iid_opcion": -1
+  };
 
   constructor(
     private fb: FormBuilder,
     private perfilService: PerfilService,
     public router: Router,
-    private perfilComponent: PerfilComponent
-  ) {
+    private perfilComponent: PerfilComponent,
+    public dialogo: MatDialogRef<AgregarPerfilComponent>,
+  ) 
+  {
+
     this.formGroupPerfil = this.fb.group({
       perfil: ['', Validators.required],
       descripcion: ['', Validators.required],
       estado: ['-1'],
     });
-    //this.getValuesForEdit();
+
   }
 
   ngOnInit(): void {
-    if (this.idPerfil === undefined) {
-     // this.getModules();
-    } else {
-     // this.onClickPopupShow.emit(true);
+
+    if(this.perfilComponent.flgnuevo==1){
+    this.Titulo="Agregar";
+
     }
+
+
     //this.dataSource.paginator = this.paginator;
   }
+
+  cerrarDialogo(): void {
+    this.dialogo.close(false);
+  }
+  
+  confirmado(): void {
+    this.dialogo.close(true);
+  }
+
+  loadData(req: any) {
+    //this.isLoading = true;
+    this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+        if (!res.isSuccess) {
+         //   this.isLoading = false;
+            swal('Error', res.message, 'error'); return;
+        }
+        this.dataSource = res.data;
+      
+       // this.isLoading = false;
+    })
+}
+
+
+
 /*
   getModules() {
     this.perfilService.getModules().subscribe((res: any[]) => {
@@ -284,7 +325,5 @@ export class AgregarPerfilComponent implements OnInit {
     */
   }
 
-  get perfilCreado() {
-    return this.idPerfil === undefined ? true : false;
-  }
+ 
 }
