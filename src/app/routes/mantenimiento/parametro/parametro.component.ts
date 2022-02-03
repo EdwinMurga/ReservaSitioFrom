@@ -1,73 +1,121 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { OnInit, Component } from '@angular/core';
+
+import { OnInit, Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { EmpresaService } from 'src/app/core/service/empresa.service';
+import { ParametroService } from 'src/app/core/service/parametro.service';
 
-export interface PeriodicElement {
-    item: number;
-    usuario: string;
-    nombres: string;
-    apellidos: string;
-    tipoDocumento: string;
-    documento: string;
-    empresa: string;
-    area: string;
-    perfil: string;
-    estado: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-    { item: 1, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 2, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 3, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 4, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 5, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-
-];
+const swal = require('sweetalert');
 @Component({
     selector: 'app-mantenimiento-parametro',
     templateUrl: './parametro.component.html',
     styleUrls: ['./parametro.component.scss']
 })
 export class ParametroComponent implements OnInit {
-    displayedColumns: string[] = ['select', 'item', 'usuario', 'nombres', 'apellidos','tipoDocumento','documento','empresa','area','perfil','estado','acciones'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    selection = new SelectionModel<PeriodicElement>(true, []);
+    @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-    constructor(private router:Router) {
+    formBusqueda: FormGroup;
+    displayedColumns: string[] = ['item', 'descripcion', 'estado', 'acciones'];
+    dataSource = new MatTableDataSource<any>();
 
+    lstEmpresa: any;
+    lstEstado: any;
+
+    //Constantes
+    parametroListaEstado: string = '1';
+    pageIndex: any = 0;
+    pageSize: any = 5;
+    totalRecord: any = 0;
+    isLoading = false;
+
+    constructor(
+        fb: FormBuilder,
+        private router: Router,
+        private _parametroService: ParametroService,
+        private _empresaService: EmpresaService
+    ) {
+        this.formBusqueda = fb.group({
+            "cboEmpresa": ['-1'],
+            "txtNombre": [''],
+            "cboEstado": ['-1'],
+        });
+
+        this.getEmpresa();
+        this.getEstado();
     }
     ngOnInit(): void {
 
     }
 
-    Ir(url:string){
+    Ir(url: string) {
         console.log(url)
         this.router.navigate([url]);
     }
 
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource.data.length;
-        return numSelected === numRows;
+    buscar() {
+        const req = {
+            "pageNum": this.pageIndex,
+            "pageSize": this.pageSize,
+            "iid_estado_registro": this.formBusqueda.controls['cboEstado'].value,
+            "vdescripcion": this.formBusqueda.controls['txtNombre'].value,
+            "iid_empresa": this.formBusqueda.controls['cboEmpresa'].value
+        }
+        this.loadData(req);
     }
 
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    masterToggle() {
-        if (this.isAllSelected()) {
-            this.selection.clear();
-            return;
+    getEmpresa() {
+        const req: any = {
+            "pageNum": 1,
+            "pageSize": 10,
+            "iid_estado_registro": -1,
+            "vnombre_completo": "",
+            "vruc": ""
         }
-
-        this.selection.select(...this.dataSource.data);
+        this._empresaService.post(req, '/Empresa/GetListEmpresa').subscribe(res => {
+            if (!res.isSuccess) {
+                swal('Error', res.message, 'error'); return;
+            }
+            this.lstEmpresa = res.data;
+        })
     }
 
-    /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: PeriodicElement): string {
-        if (!row) {
-            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-        }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.item + 1}`;
+    getEstado() {
+        this._parametroService.get('/ParametroAplicacion/GetListCbTablaDetalleParametro?requestAuxiliar=' + this.parametroListaEstado).subscribe(res => {
+            if (!res.isSuccess) {
+                swal('Error', res.message, 'error'); return;
+            }
+            this.lstEstado = res.data;
+        })
+    }
+
+    loadData(req: any) {
+        this.isLoading = true;
+        this._empresaService.post(req, '/ParametroAplicacion/GetListParametro').subscribe(res => {
+            if (!res.isSuccess) {
+                this.isLoading = false;
+                swal('Error', res.message, 'error'); return;
+            }
+            this.dataSource = res.data;
+            this.paginator.pageIndex = this.pageIndex;
+            this.totalRecord = res.totalregistro;
+            this.paginator.length = this.totalRecord;
+            this.isLoading = false;
+        })
+    }
+
+    changePage(event: PageEvent) {
+        // debugger;;
+        this.pageIndex = event.pageIndex;
+        this.pageSize = event.pageSize;
+        const req: any = {
+            "pageNum": this.pageIndex,
+            "pageSize": this.pageSize,
+            "iid_estado_registro": this.formBusqueda.controls['cboEstado'].value,
+            "vdescripcion": this.formBusqueda.controls['txtNombre'].value,
+            "iid_empresa": this.formBusqueda.controls['cboEmpresa'].value
+        };
+        this.loadData(req);
     }
 }

@@ -18,7 +18,7 @@ const swal = require('sweetalert');
 })
 export class UsuarioComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-    
+
     displayedColumns: string[] = ['codigo', 'nombre', 'apellidoPaterno', 'apellidoMaterno', 'tipoDocumento', 'documento', 'perfil', 'estado', 'acciones'];
     dataSource = new MatTableDataSource<any>();
     formBusqueda: FormGroup;
@@ -28,7 +28,7 @@ export class UsuarioComponent implements OnInit {
     //Constantes
     parametroListaEstado: string = '1';
     parametroListaTipoDocumento: string = '2';
-    pageIndex: any = 1;
+    pageIndex: any = 0;
     pageSize: any = 5;
     totalRecord: any = 0;
     isLoading = false;
@@ -61,7 +61,7 @@ export class UsuarioComponent implements OnInit {
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
-      }
+    }
 
     buscar() {
         const req = {
@@ -76,12 +76,7 @@ export class UsuarioComponent implements OnInit {
             "vapellido_materno": this.formBusqueda.controls['txtApellidoMaterno'].value,
             "iid_empresa": -1
         }
-        this._usuarioService.post(req, '/Usuario/GetListUsuario').subscribe(res => {
-            if (!res.isSuccess) {
-                swal('Error', res.message, 'error'); return;
-            }
-            this.dataSource = res.data;
-        })
+        this.loadData(req);
     }
 
     changePage(event: PageEvent) {
@@ -104,15 +99,18 @@ export class UsuarioComponent implements OnInit {
     }
 
     loadData(req: any) {
+        console.log(req)
         this.isLoading = true;
         this._usuarioService.post(req, '/Usuario/GetListUsuario').subscribe(res => {
             if (!res.isSuccess) {
                 this.isLoading = false;
                 swal('Error', res.message, 'error'); return;
             }
+            console.log(res.data)
             this.dataSource = res.data;
             this.paginator.pageIndex = this.pageIndex;
-            this.paginator.length = res.totalregistro;
+            this.totalRecord = res.totalregistro;
+            this.paginator.length = this.totalRecord;
             this.isLoading = false;
         })
     }
