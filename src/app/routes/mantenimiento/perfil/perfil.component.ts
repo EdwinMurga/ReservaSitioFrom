@@ -32,7 +32,7 @@ export class PerfilComponent implements OnInit {
         private router: Router,
         private perfilService: PerfilService,
         private _parametroService: ParametroService,
-        public dialogo: MatDialog
+        public dialogo: MatDialog,
     ) {
 
         this.form = fb.group({
@@ -43,7 +43,7 @@ export class PerfilComponent implements OnInit {
         
         this.dataSource = new MatTableDataSource();
     }
-    
+
     ngOnInit(): void {
 
     }
@@ -112,7 +112,8 @@ export class PerfilComponent implements OnInit {
         this.flgnuevo=flg;
         this.dialogo.open(AgregarPerfilComponent, {
             disableClose: true, restoreFocus: false, panelClass: 'cambia-nombre-dialog-mat',
-            width: '60%'
+            width: '60%',
+            data:this
         })
             .afterClosed().subscribe(data => {
                 console.log(data)
