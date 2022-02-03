@@ -1,0 +1,79 @@
+.fa-2x{
+    font-size: 1.5em;
+}
+.card-title{
+    font-weight: bold;
+    font-size: large;
+}
+.text-dark {
+    color: #607D8B !important;
+    font-size: medium;
+}
+.content-row{
+    margin-left: 50px;
+    margin-top: -30px;
+    
+}
+.margin{
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: -20px;
+}
+.form-group-button{
+margin-top: 40px;
+height: 50px;
+}
+.label {
+    display: inline-block;
+    margin-bottom: 0rem !important; 
+}
+.label-filter{
+    font-size: 18px;
+    color: silver;
+}
+.custom-select-lg {
+    height: calc(1.5em + 1.25rem + 2px);
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+    color: silver;
+    border-radius: 16px;
+    height: 40px;
+    border: 0px;
+}
+.form-control-rounded {
+    border-radius: 16px !important;
+    height: 40px !important;
+    border: 0px !important;
+    border-color: white !important;
+}
+.btn {
+    border-radius: 12px;
+    font-size: 20px;
+    -webkit-appearance: none;
+    outline: none !important;
+    transition: all 0.1s;
+}
+
+.btn-outline-primary {
+    color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}
+
+.btn-outline-primary:hover {
+    color: white !important;
+    background-color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}
+.btn-primary{
+    color: #fff;
+    background-color: #5e81f4 !important;
+    border-color: #5e81f4 !important;
+}
+.btn-secondary {
+    background-color: #fff;
+    border-color: grey;
+    color: grey;
+    border: 1px solid grey;
+}

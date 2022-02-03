@@ -7,6 +7,7 @@ import { EmpresaComponent } from './empresa/empresa.component';
 import { EspacioComponent } from './espacio/espacio.component';
 import { MantenimientoComponent } from './mantenimiento.component';
 import { ParametroComponent } from './parametro/parametro.component';
+import { AgregarPerfilComponent } from './perfil/agregar-perfil/agregar-perfil.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { PisoComponent } from './piso/piso.component';
 import { EditarTablaAuxiliarComponent } from './tabla-auxiliar/editar-tabla-auxiliar/editar-tabla-auxiliar.component';
@@ -45,7 +46,8 @@ const routes: Routes = [
         TablaAuxiliarComponent,
         EditarTablaAuxiliarComponent,
         AgregarUsuarioComponent,
-        EditarUsuarioComponent
+        EditarUsuarioComponent,
+        AgregarPerfilComponent
     ],
     exports: [
         RouterModule
