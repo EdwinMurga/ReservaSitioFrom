@@ -11,6 +11,7 @@ import { PerfilService } from './service/perfil.service';
 import { UsuarioService } from './service/usuario.service';
 import { ParametroService } from './service/parametro.service';
 import { AuthenticationService } from './service/authentication.service';
+import { EmpresaService } from './service/empresa.service';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { AuthenticationService } from './service/authentication.service';
         PerfilService,
         AuthenticationService,
         UsuarioService,
-        ParametroService
+        ParametroService,
+        EmpresaService
     ],
     declarations: [
     ],
