@@ -1,140 +1,86 @@
 <div class="content-heading">
-    <div>Tablas Auxiliares</div>
+  <div>Tablas Auxiliares</div>
 </div>
-<div class="row margin">
+<form [formGroup]="formBusqueda" (ngSubmit)="buscar()">
+  <div class="row margin">
+    <!-- <div class="col-xl-3">
+      <div class="form-group">
+        <label class="label-filter">Empresa</label>
+        <select class="custom-select custom-select-lg mb-3" formControlName="cboEmpresa">
+          <option value="-1">Seleccione una empresa</option>
+          <option *ngFor="let empresa of lstEmpresa" value="{{empresa.iid_empresa}}">{{empresa.vnombre_completo}}
+          </option>
+        </select>
+      </div>
+    </div> -->
+    <div class="col-xl-4">
+      <div class="form-group">
+        <label class="label-filter">Nombre de tabla auxiliar</label>
+        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+          autocomplete="off" formControlName="txtNombre" />
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="form-group">
+        <label class="label-filter">Estado</label>
+        <select class="custom-select custom-select-lg mb-3" formControlName="cboEstado">
+          <option value="-1">Seleccione</option>
+          <option value="{{estado.id}}" *ngFor="let estado of lstEstado">{{estado.value2}}</option>
+        </select>
+      </div>
+    </div>
     <div class="col-xl-3">
-        <div class="form-group">
-            <label class="label-filter">Empresa</label>
-            <select class="custom-select custom-select-lg mb-3">
-                <option selected="">Seleccione una empresa</option>
-            </select>
-        </div>
+      <div class="form-group-button">
+        <button class="mr-1 mb-1 btn btn-outline-primary" type="submit">Buscar</button>
+      </div>
     </div>
-    <div class="col-xl-3">
-        <div class="form-group">
-            <label class="label-filter">Edificio</label>
-            <select class="custom-select custom-select-lg mb-3">
-                <option selected="">Seleccione un edificio</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-xl-2">
-        <div class="form-group">
-            <label class="label-filter">Piso</label>
-            <select class="custom-select custom-select-lg mb-3">
-                <option selected="">Seleccione un piso</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-xl-2">
-        <div class="form-group">
-            <label class="label-filter">Estado</label>
-            <select class="custom-select custom-select-lg mb-3">
-                <option selected="">Seleccione un estado</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-xl-2">
-        <div class="form-group-button">
-            <button class="mr-1 mb-1 btn btn-outline-primary" type="button">Buscar</button>
-        </div>
-    </div>
-</div>
-
-<div class="form-group-button mr-5 ml-5 mt-3 mb-1">
-    <button class="mr-1 mb-1 btn btn-primary" type="button">Agregar</button>
-</div>
-
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 ml-5" >
-
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="select">
-      <th mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()"
-                      [aria-label]="checkboxLabel()">
-        </mat-checkbox>
-      </th>
-      <td mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)"
-                      [aria-label]="checkboxLabel(row)">
-        </mat-checkbox>
-      </td>
-    </ng-container>
-  
+  </div>
+</form>
+<!-- <div class="form-group-button mr-5 ml-5 mt-3 mb-1">
+  <button class="mr-1 mb-1 btn btn-primary" type="button">Agregar</button>
+</div> -->
+<br>
+<div class="mat-elevation-z8 ml-5 mr-5">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <table mat-table [dataSource]="dataSource">
     <!-- Position Column -->
     <ng-container matColumnDef="item">
       <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.item}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.iid_tabla_auxiliar}} </td>
     </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="usuario">
-      <th mat-header-cell *matHeaderCellDef> Perfil </th>
-      <td mat-cell *matCellDef="let element"> {{element.usuario}} </td>
-    </ng-container>
-  
+
     <!-- Weight Column -->
-    <ng-container matColumnDef="nombres">
+    <ng-container matColumnDef="descripcion">
       <th mat-header-cell *matHeaderCellDef> Descripción </th>
-      <td mat-cell *matCellDef="let element"> {{element.nombres}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.vdescripcion}} </td>
     </ng-container>
-  
+
     <!-- Symbol Column -->
-    <ng-container matColumnDef="apellidos">
+    <ng-container matColumnDef="estado">
       <th mat-header-cell *matHeaderCellDef> Estado </th>
-      <td mat-cell *matCellDef="let element"> {{element.apellidos}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.vestado}} </td>
     </ng-container>
-
-    <ng-container matColumnDef="tipoDocumento">
-        <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
-        <td mat-cell *matCellDef="let element"> {{element.tipoDocumento}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="documento">
-        <th mat-header-cell *matHeaderCellDef> Documento </th>
-        <td mat-cell *matCellDef="let element"> {{element.documento}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="empresa">
-        <th mat-header-cell *matHeaderCellDef> Empresa </th>
-        <td mat-cell *matCellDef="let element"> {{element.empresa}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="area">
-        <th mat-header-cell *matHeaderCellDef> Area </th>
-        <td mat-cell *matCellDef="let element"> {{element.area}} </td>
-      </ng-container>
-      <ng-container matColumnDef="perfil">
-        <th mat-header-cell *matHeaderCellDef> Perfil </th>
-        <td mat-cell *matCellDef="let element"> {{element.perfil}} </td>
-      </ng-container>
-      <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef> Estado </th>
-        <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
-      </ng-container>
 
     <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
-        <td mat-cell *matCellDef="let element" style="text-align: center;">
-            <button class="btn btn-sm btn-secondary" type="button" tooltip='Editar' (click)="mostrarDialogo(element)" >
-                <em class="fa fa-x1 fa-edit"></em>
-            </button>
-            <button class="btn btn-sm btn-secondary" type="button" tooltip='Eliminar'>
-                <em class="fa fa-x1 fa-trash-alt"></em>
-            </button>
-        </td>
+      <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Configurar </th>
+      <td mat-cell *matCellDef="let element" style="text-align: center;">
+        <button class="btn btn-sm btn-secondary" type="button" tooltip='Configurar' (click)="mostrarDialogoEditar(element)">
+          <em class="fa fa-x1 fa-edit"></em>
+        </button>
+      </td>
     </ng-container>
-  
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-        (click)="selection.toggle(row)">
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
     </tr>
   </table>
 
-  <div class="form-group-button mr-5 ml-5 mt-3 mb-1">
-    <button class="mr-1 mb-1 btn btn-outline-primary" type="button" (click)="Ir('/mantenimiento')">Retroceder</button>
+  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" [length]="totalRecord" [pageIndex]="pageIndex"
+    [pageSize]="pageSize" (page)="changePage($event)" showFirstLastButtons aria-label="Select page">
+  </mat-paginator>
+
+</div>
+
+<div class="form-group-button mr-5 ml-5 mt-3 mb-1">
+  <button class="mr-1 mb-1 btn btn-outline-primary" type="button" (click)="Ir('/mantenimiento')">Retroceder</button>
 </div>

@@ -20,7 +20,7 @@ export class EditarUsuarioComponent implements OnInit {
     //Constantes
     parametroListaEstado: string = '1';
     parametroListaTipoDocumento: string = '2';
-    
+
     constructor(
         private _usuarioService: UsuarioService,
         private _perfilService: PerfilService,
@@ -92,7 +92,6 @@ export class EditarUsuarioComponent implements OnInit {
                 "vapellido_materno": value.txtApellidoMaterno,
                 "vcorreo_electronico": value.txtCorreoElectronico,
                 "vnumero_telefonico": value.txtNumeroTelefonico,
-                "vclave": value.txtClave,
                 "iid_empresa": 1
             }
             this._usuarioService.post(req, '/Usuario/RegisterUsuario').subscribe((res: any) => {

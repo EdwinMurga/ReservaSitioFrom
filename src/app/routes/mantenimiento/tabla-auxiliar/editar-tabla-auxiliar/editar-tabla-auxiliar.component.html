@@ -1,71 +1,69 @@
 <h2 mat-dialog-title>Editar tabla auxiliar</h2>
 
-<div mat-dialog-content style="justify-content: center;">
+<div mat-dialog-content style="justify-content: center; background-color: #f5f7fa;">
 
-    <div class="card-deck">
-        <div class="card b mb-12">
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <form [formGroup]="formRegistro">
-                        <div class="form-row pl-4 pt-1 mr-3">
-                            <div class="col-lg-4 mb-3">
-                                <label>Tipo de tabla : </label>
-                                <input class="form-control" type="text" readonly formControlName="txtNombre" />
-                            </div>
-                            <div class="col-lg-4 mb-3">
-                                <label>Descripción</label>
-                                <input class="form-control" type="text" placeholder="Ingrese información"
-                                    formControlName="txtDescripcion" />
-                                <!-- <span class="text-danger"
+    <div class="form-group row">
+        <div class="col-md-12">
+            <form [formGroup]="formRegistro">
+                <div class="form-row pl-4 pt-1 mr-3">
+                    <div class="col-lg-4 mb-3">
+                        <label class="label-filter">Tipo de tabla : </label>
+                        <input class="form-control form-control-rounded" type="text" readonly
+                            formControlName="txtNombre" />
+                    </div>
+                    <div class="col-lg-4 mb-3">
+                        <label class="label-filter">Descripción</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtDescripcion" />
+                        <!-- <span class="text-danger"
                             *ngIf="formRegistro.controls['txtDescripcion'].hasError('required') && (formRegistro.controls['txtDescripcion'].dirty || formRegistro.controls['txtDescripcion'].touched)">*Campo
                             requerido</span> -->
-                            </div>
-                            <div class="col-lg-4 mb-3">
-                                <label>Valor de texto</label>
-                                <input class="form-control" type="text" placeholder="Ingrese información"
-                                    formControlName="txtValorTexto" />
-                                <!-- <span class="text-danger"
+                    </div>
+                    <div class="col-lg-4 mb-3">
+                        <label class="label-filter">Valor de texto</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtValorTexto" />
+                        <!-- <span class="text-danger"
                             *ngIf="formRegistro.controls['txtValorTexto'].hasError('required') && (formRegistro.controls['txtValorTexto'].dirty || formRegistro.controls['txtValorTexto'].touched)">*Campo
                             requerido</span> -->
-                            </div>
-                        </div>
-                        <div class="form-row pl-4 pt-1 mr-3">
-                            <div class="col-lg-4">
-                                <label>Valor texto corto</label>
-                                <input class="form-control" type="text" placeholder="Ingrese información"
-                                    formControlName="txtValorCorto" />
-                            </div>
-                            <div class="col-lg-4">
-                                <label>Valor entero</label>
-                                <input class="form-control" type="text" placeholder="Ingrese información"
-                                    formControlName="txtValorEntero" />
-                            </div>
-                            <div class="col-lg-4">
-                                <label>Valor decimal</label>
-                                <input class="form-control" type="text" placeholder="Ingrese información"
-                                    formControlName="txtValorDecimal" />
-                            </div>
-                        </div>
-                        <div class="form-row pl-4 pt-1 mr-3">
-                            <div class="col-lg-4">
-                                <label>Estado</label>
-                                <select class="form-control" formControlName="cboEstado">
-                                    <option value="">Seleccione</option>
-                                    <!-- <option *ngFor="let estado of lstEstado" value="{{estado.nvalorEntero}}">{{estado.vvalorTextoCorto}}</option> -->
-                                </select>
-                                <!-- <span class="text-danger"
+                    </div>
+                </div>
+                <div class="form-row pl-4 pt-1 mr-3">
+                    <div class="col-lg-4">
+                        <label class="label-filter">Valor texto corto</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtValorCorto" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="label-filter">Valor entero</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtValorEntero" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="label-filter">Valor decimal</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtValorDecimal" />
+                    </div>
+                </div>
+                <div class="form-row pl-4 pt-1 mr-3">
+                    <div class="col-lg-4">
+                        <label class="label-filter">Estado</label>
+                        <select class="form-control custom-select-lg" formControlName="cboEstado">
+                            <option value="">Seleccione</option>
+                            <!-- <option *ngFor="let estado of lstEstado" value="{{estado.nvalorEntero}}">{{estado.vvalorTextoCorto}}</option> -->
+                        </select>
+                        <!-- <span class="text-danger"
                            *ngIf="formRegistro.controls['cboEstado'].hasError('required') && (formRegistro.controls['cboEstado'].dirty || formRegistro.controls['cboEstado'].touched)">*Campo
                            requerido</span> -->
-                            </div>
-                            <div class="col-lg-8 pl-4 mt-1">
-                                <button class="mr-1 mt-4 btn btn-outline-danger" type="submit">Guardar</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="col-lg-8 pl-4 mt-1">
+                        <button class="ml-1 mt-4 btn btn-primary" type="button" type="submit">Guardar</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+
 </div>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -118,10 +116,6 @@
 </mat-paginator>
 <br>
 <div mat-dialog-actions style="justify-content: center;">
-    <button mat-button
-    mat-raised-button
-    color="secundary"  (click)="cerrarDialogo()"> Cerrar </button>
-    <button mat-button
-    mat-raised-button
-    color="primary"  (click)="confirmado()"> Guardar </button>
+    <button class="btn btn-secundary" type="button" (click)="cerrarDialogo()"> Cerrar </button>
+    <button class="ml-1 mb-1 btn btn-primary" type="button" (click)="postRegistrar()"> Guardar </button>
 </div>

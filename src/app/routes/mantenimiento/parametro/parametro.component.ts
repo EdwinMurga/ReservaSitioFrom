@@ -1,11 +1,13 @@
 
 import { OnInit, Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { EmpresaService } from 'src/app/core/service/empresa.service';
 import { ParametroService } from 'src/app/core/service/parametro.service';
+import { EditarParametroComponent } from './editar-parametro/editar-parametro.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -34,7 +36,8 @@ export class ParametroComponent implements OnInit {
         fb: FormBuilder,
         private router: Router,
         private _parametroService: ParametroService,
-        private _empresaService: EmpresaService
+        private _empresaService: EmpresaService,
+        public dialogo: MatDialog
     ) {
         this.formBusqueda = fb.group({
             "cboEmpresa": ['-1'],
@@ -93,8 +96,10 @@ export class ParametroComponent implements OnInit {
     loadData(req: any) {
         this.isLoading = true;
         this._empresaService.post(req, '/ParametroAplicacion/GetListParametro').subscribe(res => {
+            console.log(res)
             if (!res.isSuccess) {
                 this.isLoading = false;
+                this.dataSource.data = [];
                 swal('Error', res.message, 'error'); return;
             }
             this.dataSource = res.data;
@@ -117,5 +122,21 @@ export class ParametroComponent implements OnInit {
             "iid_empresa": this.formBusqueda.controls['cboEmpresa'].value
         };
         this.loadData(req);
+    }
+
+    mostrarDialogoEditar(item: any): void {
+        console.log(item)
+        this.dialogo.open(EditarParametroComponent, {
+            disableClose: true, restoreFocus: false, panelClass: 'cambia-nombre-dialog-mat',
+            data: item,
+            width: '60%'
+        })
+            .afterClosed().subscribe(data => {
+                console.log(data)
+                if (data) {
+                    this.buscar();
+                    swal('Información', 'Usuario modificado correctamente', 'success');
+                }
+            });
     }
 }

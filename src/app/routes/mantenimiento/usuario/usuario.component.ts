@@ -104,6 +104,7 @@ export class UsuarioComponent implements OnInit {
         this._usuarioService.post(req, '/Usuario/GetListUsuario').subscribe(res => {
             if (!res.isSuccess) {
                 this.isLoading = false;
+                this.dataSource.data = [];
                 swal('Error', res.message, 'error'); return;
             }
             console.log(res.data)

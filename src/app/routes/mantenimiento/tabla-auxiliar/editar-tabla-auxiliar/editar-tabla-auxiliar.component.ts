@@ -63,4 +63,8 @@ export class EditarTablaAuxiliarComponent implements OnInit {
     });
   }
 
+  postRegistrar(){
+    
+  }
+
 }
