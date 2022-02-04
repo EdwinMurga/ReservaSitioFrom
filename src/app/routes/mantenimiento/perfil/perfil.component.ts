@@ -26,6 +26,18 @@ export class PerfilComponent implements OnInit {
     flgnuevo:any=0;
     lstEstado:any=0;
     parametroListaEstado:any=1;
+    totalRecord:any=0;
+    pageIndex :any = 1;
+    pageSize :any=5;
+  
+     req = {
+        pageNum: 1,
+        pageSize: 5,
+        iid_estado_registro: -1,
+        iid_perfil: -1,
+        vnombre_perfil: "",
+        vdescripcion_perfil:""
+    }
 
     constructor(
         private fb: FormBuilder,
@@ -42,6 +54,7 @@ export class PerfilComponent implements OnInit {
             'cboEstado': ['-1'],
         });      
                
+        this.loadData(this.req);
     }
 
     ngOnInit(): void {
@@ -54,33 +67,45 @@ export class PerfilComponent implements OnInit {
     }
 
     onSubmit($ev, value: any) {
-        console.log(value)
+      //  console.log(value)
         $ev.preventDefault();
         for (let c in this.form.controls) {
             this.form.controls[c].markAsTouched();
         }
 
         if (this.form.valid) {
-            const req = {
-                "pageNum": 1,
-                "pageSize": 10,
-                "iid_estado_registro": -1,
-                "iid_perfil": -1,
-                "vnombre_perfil": value.txtNombre,
-                "vdescripcion_perfil": value.cboEstado
-            }
-            this.perfilService.post(req, '/Perfil/GetListPerfil').subscribe(res => {
-                console.log(res.data)
+                    
+                this.req.vnombre_perfil=value.txtNombre;
+                this.req.iid_estado_registro= value.cboEstado;
 
-                if(!res.isSuccess){
-                    swal('Validación', res.message, 'warning'); return;
-                }
-                
-                this.dataSource.data = res.data;
-                console.log( res.data);
-            });
+           this.loadData(this.req);
         } 
     }
+
+    changePage(event:any)
+    {
+
+    this.req.pageNum = (event.pageIndex*event.pageSize)+1;
+    this.req.pageSize = event.pageSize;
+    this.loadData(this.req);
+
+    }
+
+    loadData(req:any)
+    {
+        //debugger;;
+        this.perfilService.post(this.req, '/Perfil/GetListPerfil').subscribe(res => {
+        // console.log(res.data)
+            if(!res.isSuccess){
+                swal('Validación', res.message, 'warning'); return;
+            }            
+            this.dataSource.data = res.data;
+            this.totalRecord = res.totalregistro;
+            //console.log( res.data);
+        });
+
+    }
+
 
     /** Whether the number of selected elements matches the total number of rows. */
     isAllSelected() {
