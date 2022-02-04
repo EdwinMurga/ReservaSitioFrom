@@ -33,15 +33,15 @@ export class PerfilComponent implements OnInit {
         private perfilService: PerfilService,
         private _parametroService: ParametroService,
         public dialogo: MatDialog,
-    ) {
-
+    ) 
+    {
+        this.getEstado();
+        this.dataSource = new MatTableDataSource();
         this.form = fb.group({
             'txtNombre': [''],
             'cboEstado': ['-1'],
-        });
-        this.getEstado();
-        
-        this.dataSource = new MatTableDataSource();
+        });      
+               
     }
 
     ngOnInit(): void {
@@ -77,7 +77,7 @@ export class PerfilComponent implements OnInit {
                 }
                 
                 this.dataSource.data = res.data;
-
+                console.log( res.data);
             });
         } 
     }
@@ -109,6 +109,7 @@ export class PerfilComponent implements OnInit {
     }
 
     mostrarDialogoAgregar(flg:any): void {
+        //debugger;;
         this.flgnuevo=flg;
         this.dialogo.open(AgregarPerfilComponent, {
             disableClose: true, restoreFocus: false, panelClass: 'cambia-nombre-dialog-mat',

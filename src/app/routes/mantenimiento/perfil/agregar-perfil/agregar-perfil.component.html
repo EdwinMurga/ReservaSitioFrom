@@ -21,6 +21,11 @@
                   placeholder="Ingrese nombre del perfil"
                   type="text"
                 />
+                <span class="text-danger"
+                *ngIf="formGroupPerfil.controls['perfil'].hasError('required') 
+                        && (formGroupPerfil.controls['perfil'].dirty 
+                        || formGroupPerfil.controls['perfil'].touched)">*Campo
+                requerido</span>
               </div>
               <div class="col-lg-7 mb-3">
                 <label>Descripción del perfil</label>
@@ -29,8 +34,15 @@
                   class="form-control"
                   formControlName="descripcion"
                   placeholder="Ingrese descripción del perfil"
-                  type="text"
-                />
+                  type="text"/>
+
+              
+                  <span class="text-danger"
+                  *ngIf="formGroupPerfil.controls['descripcion'].hasError('required') 
+                  && (formGroupPerfil.controls['descripcion'].dirty 
+                  || formGroupPerfil.controls['descripcion'].touched)">*Campo
+                    requerido</span>
+                
               </div>
               <!-- <div class="col-lg-3 pl-4 mt-1">
                 <button
@@ -81,10 +93,13 @@
       <th mat-header-cell *matHeaderCellDef>Ver</th>
       <td mat-cell *matCellDef="let row">
         <mat-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="$event ? selectionVer.toggle(row) : null"
-           [(ngModel)]="row.ver"
+        
+        (change)="selectCheck(row)"
+        [(ngModel)]="row.ivisualizar"
         >
+        <!--   (click)="$event.stopPropagation()"
+          (change)="$event ? selectionVer.toggle(row) : null"
+           [(ngModel)]="row.ivisualizar" -->
         </mat-checkbox>
       </td>
     </ng-container>
@@ -93,11 +108,14 @@
       <th mat-header-cell *matHeaderCellDef>Crear</th>
       <td mat-cell *matCellDef="let row">
         <mat-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="$event ? selectionCrear.toggle(row) : null"
-          [(ngModel)]="row.crear"
+         
+          (change)="selectCheck(row)"
+          [(ngModel)]="row.icrear"
         >
         </mat-checkbox>
+        <!--  (click)="$event.stopPropagation()"
+          (change)="$event ? selectionCrear.toggle(row) : null"
+          [(ngModel)]="row.icrear" -->
       </td>
     </ng-container>
   
@@ -105,11 +123,13 @@
       <th mat-header-cell *matHeaderCellDef>editar</th>
       <td mat-cell *matCellDef="let row">
         <mat-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="$event ? selectionEditar.toggle(row) : null"
-           [(ngModel)]="row.editar"
+        (change)="selectCheck(row)"
+        [(ngModel)]="row.iactualizar"
         >
         </mat-checkbox>
+        <!--  (click)="$event.stopPropagation()"
+          (change)="$event ? selectionEditar.toggle(row) : null"
+           [(ngModel)]="row.iactualizar" -->
       </td>
     </ng-container>
   
@@ -117,11 +137,13 @@
       <th mat-header-cell *matHeaderCellDef>borrar</th>
       <td mat-cell *matCellDef="let row">
         <mat-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="$event ? selectionBorrar.toggle(row) : null"
-           [(ngModel)]="row.borrar"
+        (change)="selectCheck(row)"
+        [(ngModel)]="row.ieliminar"
         >
         </mat-checkbox>
+        <!-- (click)="$event.stopPropagation()"
+          (change)="$event ? selectionBorrar.toggle(row) : null"
+           [(ngModel)]="row.ieliminar" -->
       </td>
     </ng-container>
   
