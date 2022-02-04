@@ -18,10 +18,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 
-export interface IPerfil {
-  perfil: string;
-  descripcion: string;
-  estado: string;
+ interface IPerfil 
+ {
+  iid_perfil: number;
+  vnombre_perfil: string;
+  vdescripcion_perfil: string;
 }
 
  interface IPerfilOpcion {
@@ -57,6 +58,8 @@ export class AgregarPerfilComponent implements OnInit {
   //@Output() onClickPopupShow = new EventEmitter<any>();
   // @Input() idPerfil: number;
   // perfiles: IPerfil[] = [];
+
+   
   dsperfilOpcion: IPerfilOpcion[] = [];
   formGroupPerfil: FormGroup;
   select_perfOpcion:any[]=[];
@@ -124,9 +127,8 @@ export class AgregarPerfilComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-
-   
+  ngOnInit(): void 
+  { 
 
   }
 
@@ -139,8 +141,7 @@ export class AgregarPerfilComponent implements OnInit {
   }
 
   loadData(req: any) {
-    //this.isLoading = true;
-   
+    //this.isLoading = true;   
     this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
         if (!res.isSuccess) {
          //   this.isLoading = false;
@@ -150,22 +151,18 @@ export class AgregarPerfilComponent implements OnInit {
         this.totalRecord = res.totalregistro;
 
         //console.log(this.dataSource);
-
         // debugger;;
+
           if(this.dsperfilOpcion!=null){
             this.dsperfilOpcion.forEach(element => {
                 res.data.forEach(function (value) {
-
-                if( value.iid_perfil_opcion==element.iid_perfil_opcion  )
-                {
-
-                  value.icrear= element.icrear;
-                  value.iactualizar= element.iactualizar;
-                  value.ieliminar= element.ieliminar;
-                  value.ivisualizar= element.ivisualizar;
-
-                }          
-                
+                    if( value.iid_perfil_opcion==element.iid_perfil_opcion  )
+                    {
+                      value.icrear= element.icrear;
+                      value.iactualizar= element.iactualizar;
+                      value.ieliminar= element.ieliminar;
+                      value.ivisualizar= element.ivisualizar;
+                    }  
                 });
             });
 
@@ -175,11 +172,9 @@ export class AgregarPerfilComponent implements OnInit {
 
 changePage(event:any)
 {
-
   this.req.pageNum = (event.pageIndex*event.pageSize)+1;
   this.req.pageSize = event.pageSize;
   this.loadData(this.req);
-
 }
 
 selectCheck(select:any)
@@ -204,21 +199,53 @@ selectCheck(select:any)
     iid_perfil_opcion: select.iid_perfil_opcion
   };
 
-  if(this.dsperfilOpcion.find(x=> x.iid_perfil_opcion==select.iid_perfil_opcion))
-  {
-    this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_perfil_opcion==select.iid_perfil_opcion ),1);
+    if(this.dsperfilOpcion.find(x=> x.iid_perfil_opcion==select.iid_perfil_opcion))
+    {
+      this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_perfil_opcion==select.iid_perfil_opcion ),1);
+      this.dsperfilOpcion.push(item);
+    }
+    else
+    {
+      this.dsperfilOpcion.push(item);  
+    }
 
-    this.dsperfilOpcion.push(item);
+}
+
+
+savePerfil(event) {
+
+  //console.log(this.dsperfilOpcion);
+
+  let value = this.formGroupPerfil.value;
+  for (let c in this.formGroupPerfil.controls) {
+      this.formGroupPerfil.controls[c].markAsTouched();
   }
-  else
-  {
 
-    this.dsperfilOpcion.push(item);
-  
-  }
+if(this.formGroupPerfil.valid){
+var req = {
+ 
 
+};
 
+ // console.log(event);
+  this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+      if (!res.isSuccess) {
+      //   this.isLoading = false;
+          swal('Error', res.message, 'error'); return;
+      }else
+      {
+        swal('sussess', res.message, 'error'); return;
+      }
+    
 
+    
+    });
+
+}
+
+}
+
+ 
 }
 
 
@@ -301,13 +328,6 @@ selectCheck(select:any)
    }
 */
  
-  onClickButton(event) {
-    //this.onClick.emit(event);
-  }
-
-
-
-
   /*
   addPerfil(data: IPerfil, event) {
     const reqData: IPerfilResponse = {
@@ -356,16 +376,6 @@ selectCheck(select:any)
   }
 */
   
-savePerfil(event) {
-
-  console.log(this.dsperfilOpcion);
-
- // console.log(event);
-
-}
-
- 
-}
 
 /*
 const seletedVer = this.selectionVer.selected;

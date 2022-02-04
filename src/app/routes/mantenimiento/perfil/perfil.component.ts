@@ -145,9 +145,39 @@ export class PerfilComponent implements OnInit {
                 console.log(data)
                 if (data) {
                     //this.buscar();
-                    swal('Información', 'Usuario creado correctamente', 'success');
+                    swal('Información', 'Perfil creado correctamente', 'success');
                 }
             });
+    }
+
+    postEliminar(id: string) {
+        swal({
+            title: '¿Esta seguro?',
+            text: 'se Inactivará el perfil seleccionado',
+            icon: 'warning',
+            buttons: {
+                cancel: true,
+                confirm: {
+                    text: 'Si!',
+                    value: true,
+                    visible: true,
+                    className: "bg-danger",
+                    closeModal: true
+                }
+            }
+        }).then((isConfirm) => {
+            if (isConfirm) {
+               // this.buscar();
+                this.perfilService.delete('/Perfil?request=' + id).subscribe(res => {
+                    if (!res.isSuccess) {
+                        swal('Error', res.message, 'error'); return;
+                    }
+                    swal('Inactivado!', 'El perfil fue inactivado correctamente.', 'success');
+                });
+            } else {
+                swal('Cancelado', 'La acción fue cancelada.', 'error');
+            }
+        });
     }
 
 }

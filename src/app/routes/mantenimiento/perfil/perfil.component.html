@@ -72,7 +72,9 @@
       <button class="btn btn-sm btn-secondary" type="button" tooltip='Editar' (click)="mostrarDialogoAgregar(element.iid_perfil)">
         <em class="fa fa-x1 fa-edit"></em>
       </button>
-      <button class="btn btn-sm btn-secondary" type="button" tooltip='Eliminar'>
+      <button class="btn btn-sm btn-secondary" type="button" tooltip='Eliminar'
+      (click)="postEliminar(element.iid_perfil)"
+      >
         <em class="fa fa-x1 fa-trash-alt"></em>
       </button>
     </td>

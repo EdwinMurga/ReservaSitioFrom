@@ -51,4 +51,28 @@ export class PerfilService {
       }),
     );
   }
+
+
+  public delete(collection: string): Observable<any> {
+
+    const url =
+        environment.ENDPOINTS.API_URL +
+        collection;
+
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+        }),
+    };
+
+    return this.http.delete<any>(url, httpOptions).pipe(
+        tap((data: any) => {
+
+        }),
+        catchError(err => {
+            throw 'Error in source. Details: ' + err;
+        }),
+    );
+}
+
 }
