@@ -6,6 +6,7 @@ import { EdificioComponent } from './edificio/edificio.component';
 import { EmpresaComponent } from './empresa/empresa.component';
 import { EspacioComponent } from './espacio/espacio.component';
 import { MantenimientoComponent } from './mantenimiento.component';
+import { EditarParametroComponent } from './parametro/editar-parametro/editar-parametro.component';
 import { ParametroComponent } from './parametro/parametro.component';
 import { AgregarPerfilComponent } from './perfil/agregar-perfil/agregar-perfil.component';
 import { PerfilComponent } from './perfil/perfil.component';
@@ -47,7 +48,8 @@ const routes: Routes = [
         EditarTablaAuxiliarComponent,
         AgregarUsuarioComponent,
         EditarUsuarioComponent,
-        AgregarPerfilComponent
+        AgregarPerfilComponent,
+        EditarParametroComponent
     ],
     exports: [
         RouterModule

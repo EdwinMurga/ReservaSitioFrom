@@ -1,98 +1,122 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { OnInit, Component } from '@angular/core';
+
+import { OnInit, Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { EmpresaService } from 'src/app/core/service/empresa.service';
+import { ParametroService } from 'src/app/core/service/parametro.service';
 import { EditarTablaAuxiliarComponent } from './editar-tabla-auxiliar/editar-tabla-auxiliar.component';
-import { ParametroAplicacionService } from 'src/app/core/service/parametroAplicacion.service';
 
-export interface PeriodicElement {
-    item: number;
-    usuario: string;
-    nombres: string;
-    apellidos: string;
-    tipoDocumento: string;
-    documento: string;
-    empresa: string;
-    area: string;
-    perfil: string;
-    estado: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-    { item: 1, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 2, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 3, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 4, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-    { item: 5, usuario: 'Hydrogen', nombres: 'Fernando', apellidos: 'Llanos',tipoDocumento: 'DNI', documento: '44634946',empresa:'XXXX',area:'YYYYYY',perfil:'Usuario',estado:'Activo' },
-];
+const swal = require('sweetalert');
 @Component({
     selector: 'app-mantenimiento-tabla-auxiliar',
     templateUrl: './tabla-auxiliar.component.html',
     styleUrls: ['./tabla-auxiliar.component.scss']
 })
 export class TablaAuxiliarComponent implements OnInit {
-    displayedColumns: string[] = ['select', 'item', 'usuario', 'nombres', 'apellidos','tipoDocumento','documento','empresa','area','perfil','estado','acciones'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    selection = new SelectionModel<PeriodicElement>(true, []);
+    @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
+    formBusqueda: FormGroup;
+    displayedColumns: string[] = ['item', 'descripcion', 'estado', 'acciones'];
+    dataSource = new MatTableDataSource<any>();
+
+    lstEmpresa: any;
+    lstEstado: any;
+
+    //Constantes
+    parametroListaEstado: string = '1';
+    pageIndex: any = 0;
+    pageSize: any = 5;
+    totalRecord: any = 0;
+    isLoading = false;
 
     constructor(
-        private parametroAplicacionService:ParametroAplicacionService,
-        private router:Router,
-        public dialogo: MatDialog) {
-
-            this.getTablaMaestra();
-
+        fb: FormBuilder,
+        private router: Router,
+        private _parametroService: ParametroService,
+        private _empresaService: EmpresaService,
+        public dialogo: MatDialog
+    ) {
+        this.formBusqueda = fb.group({
+            "txtNombre": [''],
+            "cboEstado": ['-1'],
+        });
+        this.getEstado();
     }
     ngOnInit(): void {
 
     }
 
-    Ir(url:string){
+    Ir(url: string) {
         console.log(url)
         this.router.navigate([url]);
     }
 
-    mostrarDialogo(item: any): void {
-        this.dialogo.open(EditarTablaAuxiliarComponent, {disableClose:true,restoreFocus: false, panelClass: 'cambia-nombre-dialog-mat',
+    buscar() {
+        const req = {
+            "pageNum": this.pageIndex,
+            "pageSize": this.pageSize,
+            "iid_estado_registro": this.formBusqueda.controls['cboEstado'].value,
+            "vdescripcion": this.formBusqueda.controls['txtNombre'].value
+        }
+        this.loadData(req);
+    }
+
+    getEstado() {
+        this._parametroService.get('/ParametroAplicacion/GetListCbTablaDetalleParametro?requestAuxiliar=' + this.parametroListaEstado).subscribe(res => {
+            if (!res.isSuccess) {
+                swal('Error', res.message, 'error'); return;
+            }
+            this.lstEstado = res.data;
+        })
+    }
+
+    loadData(req: any) {
+        this.isLoading = true;
+        console.log(req)
+        this._empresaService.post(req, '/ParametroAplicacion/GetListTablaParametro').subscribe(res => {
+            console.log(res)
+            if (!res.isSuccess) {
+                this.isLoading = false;
+                this.dataSource.data = [];
+                swal('Error', res.message, 'error'); return;
+            }
+            this.dataSource = res.data;
+            this.paginator.pageIndex = this.pageIndex;
+            this.totalRecord = res.totalregistro;
+            this.paginator.length = this.totalRecord;
+            this.isLoading = false;
+        })
+    }
+
+    changePage(event: PageEvent) {
+        // debugger;;
+        this.pageIndex = event.pageIndex;
+        this.pageSize = event.pageSize;
+        const req: any = {
+            "pageNum": this.pageIndex,
+            "pageSize": this.pageSize,
+            "iid_estado_registro": this.formBusqueda.controls['cboEstado'].value,
+            "vdescripcion": this.formBusqueda.controls['txtNombre'].value
+        };
+        this.loadData(req);
+    }
+
+    mostrarDialogoEditar(item: any): void {
+        console.log(item)
+        this.dialogo.open(EditarTablaAuxiliarComponent, {
+            disableClose: true, restoreFocus: false, panelClass: 'cambia-nombre-dialog-mat',
             data: item,
             width: '60%'
-          })
-          .afterClosed().subscribe(data=> {
-              console.log(data)
-          });
-      }
-
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource.data.length;
-        return numSelected === numRows;
+        })
+            .afterClosed().subscribe(data => {
+                console.log(data)
+                if (data) {
+                    this.buscar();
+                    swal('Información', 'Usuario modificado correctamente', 'success');
+                }
+            });
     }
-
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    masterToggle() {
-        if (this.isAllSelected()) {
-            this.selection.clear();
-            return;
-        }
-
-        this.selection.select(...this.dataSource.data);
-    }
-
-    /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: PeriodicElement): string {
-        if (!row) {
-            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-        }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.item + 1}`;
-    }
-
-    getTablaMaestra(){
-        this.parametroAplicacionService.get('/TablaCabecera').subscribe((res: any) => {
-            this.dataSource.data = res.objModel;
-        },error => {
-    
-        });
-      }
 }

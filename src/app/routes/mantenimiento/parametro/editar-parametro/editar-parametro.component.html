@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>Editar Usuario</h2>
+
+<div mat-dialog-content style="justify-content: center; background-color: #f5f7fa;">
+
+    <div class="form-group row">
+        <div class="col-md-12">
+            <form [formGroup]="formRegistro">
+                <div class="form-row pl-4 pt-1 mr-3">
+                    <div class="col-lg-4 mb-1">
+                        <label class="label-filter">Descripción</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtDescripcion" />
+                        <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtDescripcion'].hasError('required') && (formRegistro.controls['txtDescripcion'].dirty || formRegistro.controls['txtDescripcion'].touched)">*Campo
+                            requerido</span>
+                    </div>
+                    <div class="col-lg-4 mb-1">
+                        <label class="label-filter">Valor cadena</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtCadena" />
+                        <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtCadena'].hasError('required') && (formRegistro.controls['txtCadena'].dirty || formRegistro.controls['txtCadena'].touched)">*Campo
+                            requerido</span>
+                    </div>
+                    <div class="col-lg-4 mb-1">
+                        <label class="label-filter">Valor entero</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtValorEntero" />
+                        <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtValorEntero'].hasError('required') && (formRegistro.controls['txtValorEntero'].dirty || formRegistro.controls['txtValorEntero'].touched)">*Campo
+                            requerido</span>
+                    </div>
+                    <!-- <div class="col-lg-4 mb-1">
+                        <label class="label-filter">Valor cadena</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtCadena" />
+                        <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtCadena'].hasError('required') && (formRegistro.controls['txtCadena'].dirty || formRegistro.controls['txtCadena'].touched)">*Campo
+                            requerido</span>
+                    </div>
+                    <div class="col-lg-4 mb-1">
+                        <label class="label-filter">Valor cadena 1</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtCadena1" />
+                        <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtCadena1'].hasError('required') && (formRegistro.controls['txtCadena1'].dirty || formRegistro.controls['txtCadena1'].touched)">*Campo
+                            requerido</span>
+                    </div> -->
+                </div>
+                <div class="form-row pl-4 pt-1 mr-3">                
+                    <div class="col-lg-4 mb-1">
+                        <label class="label-filter">Valor decimal</label>
+                        <input class="form-control form-control-rounded" type="text" placeholder="Ingrese información"
+                            formControlName="txtValorDecimal" />
+                        <span class="text-danger"
+                            *ngIf="formRegistro.controls['txtValorDecimal'].hasError('required') && (formRegistro.controls['txtValorDecimal'].dirty || formRegistro.controls['txtValorDecimal'].touched)">*Campo
+                            requerido</span>
+                    </div>
+                    <div class="col-lg-4 mb-1">
+                        <label class="label-filter">Estado</label>
+                        <select class="custom-select custom-select-lg" formControlName="cboEstado">
+                            <option value="">Seleccione</option>
+                            <option value="{{estado.id}}" *ngFor="let estado of lstEstado">{{estado.value2}}</option>
+                        </select>
+                        <span class="text-danger"
+                            *ngIf="formRegistro.controls['cboEstado'].hasError('required') && (formRegistro.controls['cboEstado'].dirty || formRegistro.controls['cboEstado'].touched)">*Campo
+                            requerido</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<br>
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="btn btn-secundary" type="button" (click)="cerrarDialogo()"> Cerrar </button>
+    <button class="ml-1 mb-1 btn btn-primary" type="button" (click)="postRegistrar()"> Guardar </button>
+</div>
