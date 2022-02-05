@@ -43,6 +43,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   ivisualizar: boolean;
 
   iid_perfil_opcion:  number;
+  flg_accesos:boolean;
 }
 
 const swal = require('sweetalert');
@@ -196,7 +197,8 @@ selectCheck(select:any)
     ivisualizar: select.ivisualizar,
     vmodulo: '',
     vopcion: '',
-    iid_perfil_opcion: select.iid_perfil_opcion
+    iid_perfil_opcion: select.iid_perfil_opcion,
+    flg_accesos:(this.data.flgnuevo==0?true:false),
   };
 
     if(this.dsperfilOpcion.find(x=> x.iid_perfil_opcion==select.iid_perfil_opcion))
@@ -216,31 +218,63 @@ savePerfil(event) {
 
   //console.log(this.dsperfilOpcion);
 
+  if(this.dsperfilOpcion!=null){
+    this.dsperfilOpcion.forEach(element => {
+      
+      if(element.icrear== true ||
+        element.iactualizar== true  ||
+        element.ieliminar==true ||
+        element.ivisualizar==true)
+      {
+        console.log(element);
+      }else
+      {
+        this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_perfil_opcion==element.iid_perfil_opcion ),1);
+      }
+         
+       
+    });
+
+  }
+
   let value = this.formGroupPerfil.value;
   for (let c in this.formGroupPerfil.controls) {
       this.formGroupPerfil.controls[c].markAsTouched();
   }
 
-if(this.formGroupPerfil.valid){
+if(this.formGroupPerfil.valid && this.dsperfilOpcion!=null){
+
+ // var items=
+
 var req = {
- 
+  "perfil": { 
+    "iid_usuario_registra":1,
+    "iid_estado_registro": 1,   
+    "iid_perfil": this.data.flgnuevo,
+    "vnombre_perfil":this.formGroupPerfil.controls['perfil'].value,
+    "vdescripcion_perfil": this.formGroupPerfil.controls['descripcion'].value
+  },
+  "perfilOpcion":  this.dsperfilOpcion
 
 };
 
  // console.log(event);
-  this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+  this.perfilService.post(req, '/Perfil/RegisterPerfilOpcion').subscribe(res => {
       if (!res.isSuccess) {
       //   this.isLoading = false;
           swal('Error', res.message, 'error'); return;
+          
       }else
       {
-        swal('sussess', res.message, 'error'); return;
+        swal('Información', 'Perfil Registrado o Actualizado correctamente', 'success');return;
       }
-    
-
     
     });
 
+}else
+{
+
+  swal('Advertencia','selecione algún item de acciones.', 'error'); return;
 }
 
 }
