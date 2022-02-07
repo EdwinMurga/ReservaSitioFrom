@@ -35,7 +35,7 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 ml-5">
 
   <!-- Checkbox Column -->
-  <ng-container matColumnDef="select">
+  <!-- <ng-container matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef>
       <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
         [indeterminate]="selection.hasValue() && !isAllSelected()">
@@ -46,7 +46,7 @@
         [checked]="selection.isSelected(row)">
       </mat-checkbox>
     </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- Name Column -->
   <ng-container matColumnDef="vnombrePerfil">
@@ -63,7 +63,7 @@
   <!-- Symbol Column -->
   <ng-container matColumnDef="iidEstadoRegistro">
     <th mat-header-cell *matHeaderCellDef> Estado </th>
-    <td mat-cell *matCellDef="let element"> {{element.iid_estado_registro}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.vestado}} </td>
   </ng-container>
 
   <ng-container matColumnDef="acciones">

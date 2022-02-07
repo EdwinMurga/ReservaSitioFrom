@@ -17,8 +17,8 @@ const swal = require('sweetalert');
     styleUrls: ['./perfil.component.scss']
 })
 export class PerfilComponent implements OnInit {
-
-    displayedColumns: string[] = ['select', 'vnombrePerfil', 'vdescripcionPerfil', 'iidEstadoRegistro', 'acciones'];
+// 'select'
+    displayedColumns: string[] = [ 'vnombrePerfil', 'vdescripcionPerfil', 'iidEstadoRegistro', 'acciones'];
     dataSource: MatTableDataSource<any>;
     selection = new SelectionModel<any>(true, []);
     form: FormGroup;

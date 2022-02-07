@@ -26,6 +26,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 }
 
  interface IPerfilOpcion {
+  iid_modulo: number;
   iid_perfil: number;
   iid_opcion: number;
 
@@ -96,6 +97,8 @@ export class AgregarPerfilComponent implements OnInit {
     iid_perfil_opcion: -1,
     iid_perfil: -1,
     iid_opcion: -1,
+    iid_modulo: -1,
+    vtitulo: "",
     flg_accesos:true ,//envia lista de accesos inactivos
   };
 
@@ -143,32 +146,58 @@ export class AgregarPerfilComponent implements OnInit {
 
   loadData(req: any) {
     //this.isLoading = true;   
-    this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+//debugger;;
+    if(this.data.flgnuevo==0){
+
+      this.perfilService.post(req, '/Opcion/GetListOpcionByModulo').subscribe(res => {
         if (!res.isSuccess) {
          //   this.isLoading = false;
             swal('Error', res.message, 'error'); return;
         }
         this.dataSource = res.data;
         this.totalRecord = res.totalregistro;
-
-        //console.log(this.dataSource);
-        // debugger;;
-
-          if(this.dsperfilOpcion!=null){
-            this.dsperfilOpcion.forEach(element => {
-                res.data.forEach(function (value) {
-                    if( value.iid_perfil_opcion==element.iid_perfil_opcion  )
-                    {
-                      value.icrear= element.icrear;
-                      value.iactualizar= element.iactualizar;
-                      value.ieliminar= element.ieliminar;
-                      value.ivisualizar= element.ivisualizar;
-                    }  
-                });
-            });
-
-          }
+        this.validarOpciones(res);
     })
+    }
+    else
+     {
+
+        var item = this.data.dataSource.filteredData.find(x=>x.iid_perfil==1);
+      this.formGroupPerfil.controls['perfil'].setValue(""+item.vnombre_perfil);
+      this.formGroupPerfil.controls['descripcion'].setValue(""+item.vdescripcion_perfil);
+
+   this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+        if (!res.isSuccess) {
+         //   this.isLoading = false;
+            swal('Error', res.message, 'error'); return;
+        }
+        this.dataSource = res.data;
+        this.totalRecord = res.totalregistro;
+        this.validarOpciones(res);
+    })
+
+     }
+ 
+
+}
+
+validarOpciones(res:any){
+
+  
+     if(this.dsperfilOpcion!=null){
+      this.dsperfilOpcion.forEach(element => {
+          res.data.forEach(function (value) {
+              if( value.iid_modulo==element.iid_modulo &&  value.iid_opcion==element.iid_opcion )
+              {
+                value.icrear= element.icrear;
+                value.iactualizar= element.iactualizar;
+                value.ieliminar= element.ieliminar;
+                value.ivisualizar= element.ivisualizar;
+              }  
+          });
+      });
+
+    }
 }
 
 changePage(event:any)
@@ -184,6 +213,7 @@ selectCheck(select:any)
  // console.log(select);
 
   var item : IPerfilOpcion={
+    iid_modulo:select.iid_modulo,
     iid_perfil: select.iid_perfil,
     iid_opcion: select.iid_opcion,
     iacceso_crear: (select.icrear == true ? 1 : 0),
@@ -201,9 +231,9 @@ selectCheck(select:any)
     flg_accesos:(this.data.flgnuevo==0?true:false),
   };
 
-    if(this.dsperfilOpcion.find(x=> x.iid_perfil_opcion==select.iid_perfil_opcion))
+    if(this.dsperfilOpcion.find(x=> x.iid_modulo==select.iid_modulo && x.iid_opcion==select.iid_opcion ))
     {
-      this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_perfil_opcion==select.iid_perfil_opcion ),1);
+      this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_modulo==select.iid_modulo && x.iid_opcion==select.iid_opcion ),1);
       this.dsperfilOpcion.push(item);
     }
     else
@@ -229,7 +259,7 @@ savePerfil(event) {
         console.log(element);
       }else
       {
-        this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_perfil_opcion==element.iid_perfil_opcion ),1);
+        this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_modulo==element.iid_modulo && x.iid_opcion==element.iid_opcion ),1);
       }
          
        
