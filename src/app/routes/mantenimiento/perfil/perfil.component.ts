@@ -55,6 +55,8 @@ export class PerfilComponent implements OnInit {
         });      
                
         this.loadData(this.req);
+
+        //this.form.controls['cboEstado'].setValue(-1);
     }
 
     ngOnInit(): void {

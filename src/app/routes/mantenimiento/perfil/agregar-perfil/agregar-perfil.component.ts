@@ -45,6 +45,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
   iid_perfil_opcion:  number;
   flg_accesos:boolean;
+  iid_estado_registro:number;
 }
 
 const swal = require('sweetalert');
@@ -162,11 +163,11 @@ export class AgregarPerfilComponent implements OnInit {
     else
      {
 
-        var item = this.data.dataSource.filteredData.find(x=>x.iid_perfil==1);
+        var item = this.data.dataSource.filteredData.find(x=>x.iid_perfil==this.data.flgnuevo);
       this.formGroupPerfil.controls['perfil'].setValue(""+item.vnombre_perfil);
       this.formGroupPerfil.controls['descripcion'].setValue(""+item.vdescripcion_perfil);
 
-   this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+      this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
         if (!res.isSuccess) {
          //   this.isLoading = false;
             swal('Error', res.message, 'error'); return;
@@ -229,6 +230,7 @@ selectCheck(select:any)
     vopcion: '',
     iid_perfil_opcion: select.iid_perfil_opcion,
     flg_accesos:(this.data.flgnuevo==0?true:false),
+    iid_estado_registro:1
   };
 
     if(this.dsperfilOpcion.find(x=> x.iid_modulo==select.iid_modulo && x.iid_opcion==select.iid_opcion ))
@@ -439,7 +441,6 @@ var req = {
     });
   }
 */
-  
 
 /*
 const seletedVer = this.selectionVer.selected;

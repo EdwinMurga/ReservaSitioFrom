@@ -13,7 +13,7 @@
       <div class="form-group">
         <label class="label-filter">Estado</label>
         <select class="custom-select custom-select-lg mb-3" formControlName="cboEstado">
-          <option selected="-1">Seleccione un estado</option>
+          <option value="-1"selected>Seleccione un estado</option>
           <option value="{{estado.id}}" *ngFor="let estado of lstEstado">{{estado.value2}}</option>
         </select>
       </div>
