@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit {
         this.settings.setLayoutSetting('offsidebarOpen', true);
         console.log('aqui')
         this.getChartData('assets/server/chart/barstacked.json').subscribe(data => this.barStackeData = data);
-        console.log(this.barStackeData )
     }
 
     getChartData(url): Observable<any> {

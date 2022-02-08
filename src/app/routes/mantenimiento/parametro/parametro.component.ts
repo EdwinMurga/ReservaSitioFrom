@@ -125,14 +125,12 @@ export class ParametroComponent implements OnInit {
     }
 
     mostrarDialogoEditar(item: any): void {
-        console.log(item)
         this.dialogo.open(EditarParametroComponent, {
             disableClose: true, restoreFocus: false, panelClass: 'cambia-nombre-dialog-mat',
             data: item,
             width: '60%'
         })
             .afterClosed().subscribe(data => {
-                console.log(data)
                 if (data) {
                     this.buscar();
                     swal('Información', 'Usuario modificado correctamente', 'success');

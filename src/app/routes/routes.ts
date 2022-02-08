@@ -10,6 +10,7 @@ export const routes: Routes = [
         children: [
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
+            { path: 'opcion/:idmodulo', loadChildren: () => import('./opcion/opcion.module').then(m => m.OpcionModule) },
             { path: 'reserva', loadChildren: () => import('./reserva/reserva.module').then(m => m.ReservaModule) },
             { path: 'mantenimiento', loadChildren: () => import('./mantenimiento/mantenimiento.module').then(m => m.MantenimientoModule) },
             { path: 'reportes', loadChildren: () => import('./reportes/reportes.module').then(m => m.ReportesModule) }

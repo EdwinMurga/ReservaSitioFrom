@@ -22,7 +22,7 @@
                 </a>
                 <!-- single menu item -->
                 <a href mat-ripple *ngIf="!item.heading && !item.submenu && !item.elink" [routerLink]="item.link" [attr.route]="item.link" title="{{item.text}}"
-                    (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
+                    (click)="toggleSubmenuClic(item)" (mouseenter)="toggleSubmenuHover($event)">
                     <span class="float-right" *ngIf="item.alert" [ngClass]="item.label || 'badge badge-success'">{{item.alert}}</span>
                     <em class="{{item.icon}}" *ngIf="item.icon"></em>
                     <span>{{(item.translate | translate) || item.text}}</span>

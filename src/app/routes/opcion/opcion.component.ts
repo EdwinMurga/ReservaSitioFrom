@@ -4,11 +4,11 @@ import { AuthenticationService } from 'src/app/core/service/authentication.servi
 import { PerfilService } from 'src/app/core/service/perfil.service';
 
 @Component({
-    selector: 'app-mantenimiento',
-    templateUrl: './mantenimiento.component.html',
-    styleUrls: ['./mantenimiento.component.scss']
+    selector: 'app-opcion',
+    templateUrl: './opcion.component.html',
+    styleUrls: ['./opcion.component.scss']
 })
-export class MantenimientoComponent implements OnInit {
+export class OpcionComponent implements OnInit {
     currentUser:any;
     subMenuItems:any;
     idModulo;

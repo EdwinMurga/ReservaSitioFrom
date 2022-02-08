@@ -4,6 +4,8 @@ declare var $: any;
 
 import { MenuService } from '../../core/menu/menu.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { PerfilService } from '../../core/service/perfil.service';
+import { AuthenticationService } from 'src/app/core/service/authentication.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -11,16 +13,33 @@ import { SettingsService } from '../../core/settings/settings.service';
     styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-
+    currentUser: any;
     menuItems: Array<any>;
-    router: Router;
+    //router: Router;
     sbclickEvent = 'click.sidebar-toggle';
     $doc: any = null;
 
-    constructor(public menu: MenuService, public settings: SettingsService, public injector: Injector) {
+    constructor(
+        private router:Router,
+        public menu: MenuService, 
+        private _perfilService:PerfilService,
+        private _authService:AuthenticationService,
+        public settings: SettingsService, 
+        public injector: Injector) {
 
-        this.menuItems = menu.getMenu();
+        // this.menuItems = menu.getMenu();
+        this. getMenu();
 
+    }
+
+    getMenu(){
+        if(this._authService.estaLogueado()){
+            this.currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+            this.menuItems = [];
+            this._perfilService.get('/Modulo/GetMenu/' + this.currentUser.iid_perfil).subscribe(res => {
+                this.menuItems = res.item;
+            });
+        }
     }
 
     ngOnInit() {
@@ -52,6 +71,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.$doc)
             this.$doc.off(this.sbclickEvent);
+    }
+
+    toggleSubmenuClic(item:any){
+        switch(item.iid_modulo){
+            case 2 : this.router.navigate(['/opcion/'+item.iid_modulo]); break;
+            case 3 : this.router.navigate(['/opcion/'+item.iid_modulo]); break;
+            case 4 : this.router.navigate(['/opcion/'+item.iid_modulo]); break;
+            default: this.router.navigate(['/home']);
+        }
+        
     }
 
     toggleSubmenuClick(event) {
