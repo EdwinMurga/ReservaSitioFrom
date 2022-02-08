@@ -15,24 +15,38 @@ import { Router } from '@angular/router';
 import { PerfilComponent } from '../perfil.component';
 import { PerfilService } from 'src/app/core/service/perfil.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ParametroService } from 'src/app/core/service/parametro.service';
 
 
 
-export interface IPerfil {
-  perfil: string;
-  descripcion: string;
-  estado: string;
+ interface IPerfil 
+ {
+  iid_perfil: number;
+  vnombre_perfil: string;
+  vdescripcion_perfil: string;
 }
 
-export interface Imodulo {
-  iidOpcion: number;
-  vmoduloName: string;
-  vopcionName: string;
-  ver: boolean;
-  crear: boolean;
-  editar: boolean;
-  borrar: boolean;
-  iidPerfilOpcion:  number;
+ interface IPerfilOpcion {
+  iid_modulo: number;
+  iid_perfil: number;
+  iid_opcion: number;
+
+  vmodulo: string;
+  vopcion: string;
+
+  iacceso_crear: number;
+  iacceso_actualizar: number;
+  iacceso_eliminar: number;
+  iacceso_visualizar: number;
+
+  icrear: boolean;
+  iactualizar: boolean;
+  ieliminar: boolean;
+  ivisualizar: boolean;
+
+  iid_perfil_opcion:  number;
+  flg_accesos:boolean;
+  iid_estado_registro:number;
 }
 
 const swal = require('sweetalert');
@@ -48,13 +62,18 @@ export class AgregarPerfilComponent implements OnInit {
   //@Output() onClickPopupShow = new EventEmitter<any>();
   // @Input() idPerfil: number;
   // perfiles: IPerfil[] = [];
-  modulos: Imodulo[] = [];
+
+   
+  dsperfilOpcion: IPerfilOpcion[] = [];
   formGroupPerfil: FormGroup;
+  select_perfOpcion:any[]=[];
+  parametroListaEstado:any=1;
   // selection = new SelectionModel<IPerfil>(true, []);
-  selectionVer = new SelectionModel<Imodulo>(true, []);
-  selectionCrear = new SelectionModel<Imodulo>(true, []);
-  selectionEditar = new SelectionModel<Imodulo>(true, []);
-  selectionBorrar = new SelectionModel<Imodulo>(true, []);
+  //selectionVer = new SelectionModel<IPerfilOpcion>(true, []);
+  //selectionCrear = new SelectionModel<IPerfilOpcion>(true, []);
+  //selectionEditar = new SelectionModel<IPerfilOpcion>(true, []);
+  //selectionBorrar = new SelectionModel<IPerfilOpcion>(true, []);
+
   displayedColumns: string[] = [
     // 'select',
     'vmoduloName',
@@ -64,23 +83,27 @@ export class AgregarPerfilComponent implements OnInit {
     'editar',
     'borrar',
   ];
-  dataSource = new MatTableDataSource<any>();
+
+  dataSource = new MatTableDataSource<IPerfilOpcion[]>();
   idPerfil: any;
   Titulo: string = 'Agregar ';
   totalRecord:any=0;
 
   pageIndex :any = 1;
   pageSize :any=5;
+  lstEstado:any;
 
   req:any={
-
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 5,
     iid_estado_registro:-1,
     iid_usuario_registra: -1,
     iid_perfil_opcion: -1,
     iid_perfil: -1,
-    iid_opcion: -1
+    iid_opcion: -1,
+    iid_modulo: -1,
+    vtitulo: "",
+    flg_accesos:true ,//envia lista de accesos inactivos
   };
 
   constructor(
@@ -89,28 +112,33 @@ export class AgregarPerfilComponent implements OnInit {
     public router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogo: MatDialogRef<AgregarPerfilComponent>,
+    private _parametroService: ParametroService,
   ) 
   {
 
     this.formGroupPerfil = this.fb.group({
       perfil: ['', Validators.required],
       descripcion: ['', Validators.required],
-      estado: ['-1'],
+      cboEstado: ['-1'],
     });
 
-this.loadData(this.req);
-
-  }
-
-  ngOnInit(): void {
-
-    if(this.data.flgnuevo==1){
+    if(this.data.flgnuevo==0)
+    {
       this.Titulo="Agregar";
-
+    }
+    else
+    {
+      this.req.iid_perfil = this.data.flgnuevo;
+      this.req.flg_accesos=false;
     }
 
+    this.loadData(this.req);
+    this.getEstado();
+  }
 
-    //this.dataSource.paginator = this.paginator;
+  ngOnInit(): void 
+  { 
+
   }
 
   cerrarDialogo(): void {
@@ -122,29 +150,188 @@ this.loadData(this.req);
   }
 
   loadData(req: any) {
-    //this.isLoading = true;
-    this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+    //this.isLoading = true;   
+//debugger;;
+    if(this.data.flgnuevo==0){
+
+      this.perfilService.post(req, '/Opcion/GetListOpcionByModulo').subscribe(res => {
         if (!res.isSuccess) {
          //   this.isLoading = false;
             swal('Error', res.message, 'error'); return;
         }
         this.dataSource = res.data;
         this.totalRecord = res.totalregistro;
-      
-       // this.isLoading = false;
+        this.validarOpciones(res);
     })
+    }
+    else
+     {
+
+        var item = this.data.dataSource.filteredData.find(x=>x.iid_perfil==this.data.flgnuevo);
+      this.formGroupPerfil.controls['perfil'].setValue(""+item.vnombre_perfil);
+      this.formGroupPerfil.controls['descripcion'].setValue(""+item.vdescripcion_perfil);
+      this.formGroupPerfil.controls['cboEstado'].setValue(item.iid_estado_registro);
+
+      this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
+        if (!res.isSuccess) {
+         //   this.isLoading = false;
+            swal('Error', res.message, 'error'); return;
+        }
+        this.dataSource = res.data;
+        this.totalRecord = res.totalregistro;
+        this.validarOpciones(res);
+    })
+
+     }
+ 
+
+}
+
+validarOpciones(res:any){
+
+  
+     if(this.dsperfilOpcion!=null){
+      this.dsperfilOpcion.forEach(element => {
+          res.data.forEach(function (value) {
+              if( value.iid_modulo==element.iid_modulo &&  value.iid_opcion==element.iid_opcion )
+              {
+                value.icrear= element.icrear;
+                value.iactualizar= element.iactualizar;
+                value.ieliminar= element.ieliminar;
+                value.ivisualizar= element.ivisualizar;
+              }  
+          });
+      });
+
+    }
 }
 
 changePage(event:any)
 {
-
-  //this.pageIndex = event.pageIndex;
-  //this.pageSize = event.pageSize;
-// (this.pageIndex*this.pageSize)+1,
-this.req.pageNum = (event.pageIndex*event.pageSize)+1;
-this.req.pageSize = event.pageSize;
+  this.req.pageNum = (event.pageIndex*event.pageSize)+1;
+  this.req.pageSize = event.pageSize;
   this.loadData(this.req);
+}
 
+selectCheck(select:any)
+{
+ // debugger;
+ // console.log(select);
+
+  var item : IPerfilOpcion={
+    iid_modulo:select.iid_modulo,
+    iid_perfil: select.iid_perfil,
+    iid_opcion: select.iid_opcion,
+    iacceso_crear: (select.icrear == true ? 1 : 0),
+    iacceso_actualizar: (select.iactualizar == true ? 1 : 0),
+    iacceso_eliminar: (select.ieliminar == true ? 1 : 0),
+    iacceso_visualizar: (select.ivisualizar == true ? 1 : 0),
+
+    icrear: select.icrear,
+    iactualizar: select.iactualizar,
+    ieliminar: select.ieliminar,
+    ivisualizar: select.ivisualizar,
+    vmodulo: '',
+    vopcion: '',
+    iid_perfil_opcion: select.iid_perfil_opcion,
+    flg_accesos:(this.data.flgnuevo==0?true:false),
+    iid_estado_registro:1
+  };
+
+    if(this.dsperfilOpcion.find(x=> x.iid_modulo==select.iid_modulo && x.iid_opcion==select.iid_opcion ))
+    {
+      this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_modulo==select.iid_modulo && x.iid_opcion==select.iid_opcion ),1);
+      this.dsperfilOpcion.push(item);
+    }
+    else
+    {
+      this.dsperfilOpcion.push(item);  
+    }
+
+}
+
+
+savePerfil(event) {
+
+  //console.log(this.dsperfilOpcion);
+
+  if(this.dsperfilOpcion!=null){
+    this.dsperfilOpcion.forEach(element => {
+      
+      if(element.icrear== true ||
+        element.iactualizar== true  ||
+        element.ieliminar==true ||
+        element.ivisualizar==true)
+      {
+        console.log(element);
+      }else
+      {
+        this.dsperfilOpcion.splice(this.dsperfilOpcion.findIndex(x=> x.iid_modulo==element.iid_modulo && x.iid_opcion==element.iid_opcion ),1);
+      }
+         
+       
+    });
+
+  }
+
+  let value = this.formGroupPerfil.value;
+  for (let c in this.formGroupPerfil.controls) {
+      this.formGroupPerfil.controls[c].markAsTouched();
+  }
+
+if( this.formGroupPerfil.controls['cboEstado'].value==-1)
+{
+ swal('Advertencia','selecione Estado del perfil.', 'error'); return;
+}
+ 
+ 
+
+if(this.formGroupPerfil.valid && (this.dsperfilOpcion!=null ||  this.dsperfilOpcion !=0)){
+
+ // var items=
+
+var req = {
+  "perfil": { 
+    "iid_usuario_registra":1,
+    "iid_estado_registro": this.formGroupPerfil.controls['cboEstado'].value,   
+    "iid_perfil": this.data.flgnuevo,
+    "vnombre_perfil":this.formGroupPerfil.controls['perfil'].value,
+    "vdescripcion_perfil": this.formGroupPerfil.controls['descripcion'].value
+  },
+  "perfilOpcion":  this.dsperfilOpcion
+
+};
+
+ // console.log(event);
+  this.perfilService.post(req, '/Perfil/RegisterPerfilOpcion').subscribe(res => {
+      if (!res.isSuccess) {
+      //   this.isLoading = false;
+          swal('Error', res.message, 'error'); return;
+          
+      }else
+      {
+        swal('Información', 'Perfil Registrado o Actualizado correctamente', 'success');return;
+      }
+    
+    });
+
+}else
+{
+
+  swal('Advertencia','selecione algún item de acciones.', 'error'); return;
+}
+
+}
+
+getEstado() {
+  this._parametroService.get('/ParametroAplicacion/GetListCbTablaDetalleParametro?requestAuxiliar=' + this.parametroListaEstado).subscribe(res => {
+      if (!res.isSuccess) {
+          swal('Error', res.message, 'error'); return;
+      }
+      this.lstEstado = res.data;
+  })
+}
+ 
 }
 
 
@@ -179,7 +366,7 @@ this.req.pageSize = event.pageSize;
   }
   
   */
-  /*
+/*
   getValuesForEdit() {
     this.perfilComponent.idPerfilSourced$.subscribe((res) => {
     //  this.onClickPopupShow.emit(true);
@@ -213,27 +400,20 @@ this.req.pageSize = event.pageSize;
     });
   }
   */
+/*
+   isAllSelected() {
+     const numSelected = this.selection.selected.length;
+     const numRows = this.dataSource.data.length;
+     return numSelected === numRows;
+   }
 
-  // isAllSelected() {
-  //   const numSelected = this.selection.selected.length;
-  //   const numRows = this.dataSource.data.length;
-  //   return numSelected === numRows;
-  // }
-
-  // masterToggle() {
-  //   this.isAllSelected()
-  //     ? this.selection.clear()
-  //     : this.dataSource.data.forEach((row) => this.selection.select(row));
-  // }
-
+   masterToggle() {
+     this.isAllSelected()
+       ? this.selection.clear()
+       : this.dataSource.data.forEach((row) => this.selection.select(row));
+   }
+*/
  
-  onClickButton(event) {
-    //this.onClick.emit(event);
-  }
-
-
-
-
   /*
   addPerfil(data: IPerfil, event) {
     const reqData: IPerfilResponse = {
@@ -281,42 +461,42 @@ this.req.pageSize = event.pageSize;
     });
   }
 */
-  savePerfil(event) {
-    const seletedVer = this.selectionVer.selected;
-    const selectionCrear = this.selectionCrear.selected;
-    const selectionEditar = this.selectionEditar.selected;
-    const selectionBorrar = this.selectionBorrar.selected;
 
-    const lista = this.dataSource.data;
-
-    //lista de ver
-    // lista.map((ele) => {
-    //   const marcado = seletedVer.find((p) => p.iidOpcion == ele.iidOpcion);
-    //   if (marcado) {
-    //     ele.ver = true;
-    //   }
-    // });
-    // //lista de crear
-    // lista.map((ele) => {
-    //   const marcado = selectionCrear.find((p) => p.iidOpcion == ele.iidOpcion);
-    //   if (marcado) {
-    //     ele.crear = true;
-    //   }
-    // });
-    // //lista de editar
-    // lista.map((ele) => {
-    //   const marcado = selectionEditar.find((p) => p.iidOpcion == ele.iidOpcion);
-    //   if (marcado) {
-    //     ele.editar = true;
-    //   }
-    // });
-    // //lista de borrar
-    // lista.map((ele) => {
-    //   const marcado = selectionBorrar.find((p) => p.iidOpcion == ele.iidOpcion);
-    //   if (marcado) {
-    //     ele.borrar = true;
-    //   }
-    // });
+/*
+const seletedVer = this.selectionVer.selected;
+const selectionCrear = this.selectionCrear.selected;
+const selectionEditar = this.selectionEditar.selected;
+const selectionBorrar = this.selectionBorrar.selected;
+  const lista = this.dataSource.data;
+      lista de ver
+     lista.map((ele) => {
+       const marcado = seletedVer.find((p) => p.iidOpcion == ele.iidOpcion);
+       if (marcado) {
+         ele.ver = true;
+       }
+     });
+     lista de crear
+     lista.map((ele) => {
+       const marcado = selectionCrear.find((p) => p.iidOpcion == ele.iidOpcion);
+       if (marcado) {
+         ele.crear = true;
+       }
+     });
+     lista de editar
+     lista.map((ele) => {
+       const marcado = selectionEditar.find((p) => p.iidOpcion == ele.iidOpcion);
+       if (marcado) {
+         ele.editar = true;
+       }
+     });
+     lista de borrar
+     lista.map((ele) => {
+       const marcado = selectionBorrar.find((p) => p.iidOpcion == ele.iidOpcion);
+       if (marcado) {
+         ele.borrar = true;
+       }
+     });
+     */
 /*
     const dataReq = this.dataSource.data.map((ele) => {
       return {
@@ -342,7 +522,3 @@ this.req.pageSize = event.pageSize;
     });
 
     */
-  }
-
- 
-}
