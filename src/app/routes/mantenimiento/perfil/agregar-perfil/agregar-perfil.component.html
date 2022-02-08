@@ -12,7 +12,7 @@
           >
           <!-- (ngSubmit)="addPerfil(formGroupPerfil.value, $event)" -->
             <div class="form-row ">
-              <div class="col-lg-4 mb-3">
+              <div class="col-lg-3 mb-3">
                 <label>Nombre del perfil</label>
                 <input
                   autocomplete="off"
@@ -27,7 +27,7 @@
                         || formGroupPerfil.controls['perfil'].touched)">*Campo
                 requerido</span>
               </div>
-              <div class="col-lg-7 mb-3">
+              <div class="col-lg-5 mb-3">
                 <label>Descripción del perfil</label>
                 <input
                   autocomplete="off"
@@ -44,15 +44,13 @@
                     requerido</span>
                 
               </div>
-              <!-- <div class="col-lg-3 pl-4 mt-1">
-                <button
-                  class="mr-1 mt-4 btn btn-outline-danger"
-                  [disabled]="!formGroupPerfil.valid"
-                  type="submit"
-                >
-                  {{ Titulo }}
-                </button>
-              </div> -->
+              <div class="col-lg-4    ">
+                <label class="label-filter">Estado</label>
+                <select class="custom-select custom-select-lg mb-3" formControlName="cboEstado">
+                  <option value="-1"selected>Seleccione un estado</option>
+                  <option value="{{estado.id}}" *ngFor="let estado of lstEstado">{{estado.value2}}</option>
+                </select>
+              </div>
             </div>
           </form>
         </div>

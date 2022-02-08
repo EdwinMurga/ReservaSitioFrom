@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { PerfilComponent } from '../perfil.component';
 import { PerfilService } from 'src/app/core/service/perfil.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ParametroService } from 'src/app/core/service/parametro.service';
 
 
 
@@ -66,6 +67,7 @@ export class AgregarPerfilComponent implements OnInit {
   dsperfilOpcion: IPerfilOpcion[] = [];
   formGroupPerfil: FormGroup;
   select_perfOpcion:any[]=[];
+  parametroListaEstado:any=1;
   // selection = new SelectionModel<IPerfil>(true, []);
   //selectionVer = new SelectionModel<IPerfilOpcion>(true, []);
   //selectionCrear = new SelectionModel<IPerfilOpcion>(true, []);
@@ -89,6 +91,7 @@ export class AgregarPerfilComponent implements OnInit {
 
   pageIndex :any = 1;
   pageSize :any=5;
+  lstEstado:any;
 
   req:any={
     pageNum: 1,
@@ -109,13 +112,14 @@ export class AgregarPerfilComponent implements OnInit {
     public router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogo: MatDialogRef<AgregarPerfilComponent>,
+    private _parametroService: ParametroService,
   ) 
   {
 
     this.formGroupPerfil = this.fb.group({
       perfil: ['', Validators.required],
       descripcion: ['', Validators.required],
-      estado: ['-1'],
+      cboEstado: ['-1'],
     });
 
     if(this.data.flgnuevo==0)
@@ -129,7 +133,7 @@ export class AgregarPerfilComponent implements OnInit {
     }
 
     this.loadData(this.req);
-
+    this.getEstado();
   }
 
   ngOnInit(): void 
@@ -166,6 +170,7 @@ export class AgregarPerfilComponent implements OnInit {
         var item = this.data.dataSource.filteredData.find(x=>x.iid_perfil==this.data.flgnuevo);
       this.formGroupPerfil.controls['perfil'].setValue(""+item.vnombre_perfil);
       this.formGroupPerfil.controls['descripcion'].setValue(""+item.vdescripcion_perfil);
+      this.formGroupPerfil.controls['cboEstado'].setValue(item.iid_estado_registro);
 
       this.perfilService.post(req, '/Perfil/GetListPerfilOpcion').subscribe(res => {
         if (!res.isSuccess) {
@@ -274,14 +279,21 @@ savePerfil(event) {
       this.formGroupPerfil.controls[c].markAsTouched();
   }
 
-if(this.formGroupPerfil.valid && this.dsperfilOpcion!=null){
+if( this.formGroupPerfil.controls['cboEstado'].value==-1)
+{
+ swal('Advertencia','selecione Estado del perfil.', 'error'); return;
+}
+ 
+ 
+
+if(this.formGroupPerfil.valid && (this.dsperfilOpcion!=null ||  this.dsperfilOpcion !=0)){
 
  // var items=
 
 var req = {
   "perfil": { 
     "iid_usuario_registra":1,
-    "iid_estado_registro": 1,   
+    "iid_estado_registro": this.formGroupPerfil.controls['cboEstado'].value,   
     "iid_perfil": this.data.flgnuevo,
     "vnombre_perfil":this.formGroupPerfil.controls['perfil'].value,
     "vdescripcion_perfil": this.formGroupPerfil.controls['descripcion'].value
@@ -311,6 +323,14 @@ var req = {
 
 }
 
+getEstado() {
+  this._parametroService.get('/ParametroAplicacion/GetListCbTablaDetalleParametro?requestAuxiliar=' + this.parametroListaEstado).subscribe(res => {
+      if (!res.isSuccess) {
+          swal('Error', res.message, 'error'); return;
+      }
+      this.lstEstado = res.data;
+  })
+}
  
 }
 
