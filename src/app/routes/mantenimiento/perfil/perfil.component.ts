@@ -144,7 +144,8 @@ export class PerfilComponent implements OnInit {
             .afterClosed().subscribe(data => {
                 console.log(data)
                 if (data) {
-                    //this.buscar();
+                    this.loadData(this.req);
+                     
                     swal('Información', 'Perfil creado correctamente', 'success');
                 }
             });
@@ -168,11 +169,12 @@ export class PerfilComponent implements OnInit {
         }).then((isConfirm) => {
             if (isConfirm) {
                // this.buscar();
-                this.perfilService.delete('/Perfil?request=' + id).subscribe(res => {
+                this.perfilService.delete('/Perfil/DeletePerfil?request=' + id).subscribe(res => {
                     if (!res.isSuccess) {
                         swal('Error', res.message, 'error'); return;
                     }
                     swal('Inactivado!', 'El perfil fue inactivado correctamente.', 'success');
+                    this.loadData(this.req);
                 });
             } else {
                 swal('Cancelado', 'La acción fue cancelada.', 'error');
